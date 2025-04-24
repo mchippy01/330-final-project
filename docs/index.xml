@@ -426,7 +426,7 @@ plot(project(vect(pts), crs(r)), add = TRUE, col = "red", pch = 16)</code>
       </ref>
     </ref-list>
   </back>
-  <sub-article article-type="notebook" id="nb-7-nb-article">
+  <sub-article article-type="notebook" id="nb-6-nb-article">
     <front-stub>
       <title-group>
         <article-title>Ess 330 Project Intro/methods</article-title>
@@ -869,7 +869,7 @@ plot(project(vect(pts), crs(r)), add = TRUE, col = "red", pch = 16)</code>
       </ref-list>
     </back>
   </sub-article>
-  <sub-article article-type="notebook" id="nb-4-nb-1">
+  <sub-article article-type="notebook" id="nb-3-nb-1">
     <front-stub>
       <title-group>
         <article-title>Ess 330 Project Updates</article-title>
