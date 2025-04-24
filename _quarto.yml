@@ -1,0 +1,28 @@
+project:
+  type: manuscript
+  output-dir: docs
+
+title: "My Document"
+bibliography: references.bib
+csl: apa-6th-edition.csl
+
+manuscript:
+  article: index.qmd
+
+format:
+  html:
+    comments:
+      hypothesis: true
+  docx: default
+  jats: default
+
+  # (other formats)
+  # pdf: default
+
+execute:
+ freeze: true
+ 
+ 
+
+
+

@@ -1,0 +1,1515 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Archiving
+and Interchange DTD v1.2 20190208//EN" "JATS-archivearticle1.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" dtd-version="1.2" article-type="other">
+  <front>
+    <article-meta>
+      <title-group>
+        <article-title>Ess 330 Project Intro/methods</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" corresp="yes">
+          <name>
+            <surname>Marx</surname>
+            <given-names>Chippy</given-names>
+          </name>
+          <string-name>Chippy Marx</string-name>
+          <role vocab="https://credit.niso.org" vocab-term="writing – original draft" vocab-term-identifier="https://credit.niso.org/contributor-roles/writing-original-draft/">writing</role>
+          <xref ref-type="aff" rid="aff-1">a</xref>
+          <xref ref-type="corresp" rid="cor-1">*</xref>
+        </contrib>
+        <contrib contrib-type="author">
+          <name>
+            <surname>Drew</surname>
+            <given-names>Chris</given-names>
+          </name>
+          <string-name>Chris Drew</string-name>
+          <role vocab="https://credit.niso.org" vocab-term="writing – original draft" vocab-term-identifier="https://credit.niso.org/contributor-roles/writing-original-draft/">writing</role>
+          <xref ref-type="aff" rid="aff-1">a</xref>
+        </contrib>
+      </contrib-group>
+      <aff id="aff-1">
+        <institution-wrap>
+          <institution>CSU</institution>
+        </institution-wrap>
+      </aff>
+      <author-notes>
+        <corresp id="cor-1"/>
+      </author-notes>
+      <history/>
+    </article-meta>
+  </front>
+  <body>
+    <sec id="reburn-and-return-how-invasive-species-influence-fire-return-intervals-in-colorado.">
+      <title>
+        <italic>Reburn and Return: How Invasive Species Influence Fire
+  Return Intervals in Colorado.</italic>
+      </title>
+      <p>
+        <underline>
+          <bold>Introduction, Background and
+  Motivation</bold>
+        </underline>
+      </p>
+      <p>Invasive plants and forest fires are significant issues in
+  Colorado. Fire intensity and frequency, as well as the dominance of
+  invasive species  are increasing in Colorado.   Invasions by
+  non-native plant species after fire can negatively impact important
+  ecosystem services and lead to invasion-fire cycles, which ultimately
+  further degrade ecosystems Prevéy et al.
+  (<xref alt="2024" rid="ref-prevey2024non" ref-type="bibr">2024</xref>)
+  . Invasive species have negative impacts on ecosystems not limited to
+  fire return intervals. Some of these impacts are disruption of species
+  interactions, impact on successional recovery, introduction and spread
+  of diseases, reduction in native species diversity, and economic
+  losses Gallardo, Clavero, Sánchez, &amp; Vilà
+  (<xref alt="2016" rid="ref-gallardo2016global" ref-type="bibr">2016</xref>). </p>
+      <p>Certain invasive species can alter fire frequencies and
+  intensities, potentially increasing the occurrence of wildfires
+  Gallardo et al.
+  (<xref alt="2016" rid="ref-gallardo2016global" ref-type="bibr">2016</xref>)
+  . The influence of non-native species on forest fire regimes is
+  complex and varies by vegetative functional type and geographic region
+  Prevéy et al.
+  (<xref alt="2024" rid="ref-prevey2024non" ref-type="bibr">2024</xref>).
+  This project will examine how different functional groups of invasive
+  species impact fire return intervals, re-establishment rates, and
+  expansion across Colorado. </p>
+      <p>Furthermore, it has been established that native  species rely on
+  soil microbiomes to establish on burned soil, while non-native do not;
+  this makes non-natives more likely to establish quickly after forest
+  fires and then dominate these disturbed sites Escobedo et al.
+  (<xref alt="2024" rid="ref-escobedo2024native" ref-type="bibr">2024</xref>).
+  However, scientific understanding of how to restore plant-soil
+  microbiome interactions after wildfires remains limited, leading to a
+  key knowledge gap in post- fire ecosystem restoration Escobedo et al.
+  (<xref alt="2024" rid="ref-escobedo2024native" ref-type="bibr">2024</xref>).
+  Escobedo’s research was done in a greenhouse in Chile, measuring
+  establishment of native vs. non-native species in burned , unburned,
+  and burned soil that was inoculated with native microbiome species
+  Escobedo et al.
+  (<xref alt="2024" rid="ref-escobedo2024native" ref-type="bibr">2024</xref>). 
+  The study found that burned soil had higher levels of available
+  nutrients, which benefited non-native species Escobedo et al.
+  (<xref alt="2024" rid="ref-escobedo2024native" ref-type="bibr">2024</xref>).
+  Furthermore, this study found that native species relied on the native
+  microbiome while non-natives did not Escobedo et al.
+  (<xref alt="2024" rid="ref-escobedo2024native" ref-type="bibr">2024</xref>).
+  Taking this study into account, once we see what invasive species are
+  an issue in Colorado relating to fire intervals, and then use
+  information about plant-soil microbiome interactions from Escobedo to
+  see if this interaction could be furthering the issue. We are not sure
+  exactly how this information will be used, but since it is relevant,
+  we want to keep the option open to explore it. It is likely outside
+  the scope of our research, but we are open to including it if we can
+  find a way to.</p>
+      <p> In this project, we will compare eight burned sites across
+  Colorado that have experienced wildfires within the past 20 years.
+  Sites will be selected to represent a range of geographic regions and
+  burn severities, enabling analysis of how different conditions
+  influence invasive species dynamics. In addition, two unburned sites
+  serving as control locations will be selected from areas with no
+  recorded wildfires during the same period. This site selection
+  strategy aims to capture variability in post-fire plant communities
+  and better understand the relationship between invasive species
+  re-establishment risk and fire severity. </p>
+      <p>
+        <underline>
+          <bold>Data exploration</bold>
+        </underline>
+      </p>
+      <p>The main dataset we will be using is current and future projection
+  post-ire invasion risk by non-native short lived forbs and grasses
+  Prevéy et al.
+  (<xref alt="2024" rid="ref-prevey2024non" ref-type="bibr">2024</xref>).
+  This data is based on vegetation cover data from plots in the Western
+  U.S that burned prior to sampling. Projected invasion risks post-fire
+  were calculated using random forests with gridded climate, topographic
+  predictor, and soil variables by Prevéy et al.
+  (<xref alt="2024" rid="ref-prevey2024non" ref-type="bibr">2024</xref>)
+  .We will use the data projected under a high emission scenario. </p>
+      <p>We will also use data from the USFS from 2005 that tracks invasive
+  species prominence
+  ( <ext-link ext-link-type="uri" xlink:href="https://research.fs.usda.gov/products/dataandtools/fia-datamart">https://research.fs.usda.gov/products/dataandtools/fia-datamart</ext-link>
+  ). We will compare a total of 10 sites in Colorado that we will
+  compare, trying to spread our sites out geographically and by severity
+  of burn. We will pick sites that had been surveyed in 2005 and are
+  also included in the projection data. </p>
+      <p>Our projection data is in a spatial format, so we will need to
+  extract data from longitude and latitude of the sites we select. We
+  will also need data that shows fires in Colorado going back to at
+  least 2005 that will include fire severity. </p>
+      <p>In order to see where our spatial data and historic data overlap ,
+  we had to take several steps. First I had to find a secondary dataset
+  from the USFS that had latitude and longitude. Then, I preformed an
+  innerjoin to get location information assigned to the sites:</p>
+      <code language="r script">library(tidyverse)</code>
+      <preformat>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+✔ lubridate 1.9.4     ✔ tidyr     1.3.1
+✔ purrr     1.0.2     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</preformat>
+      <code language="r script">library(terra)</code>
+      <preformat>terra 1.8.42
+
+Attaching package: 'terra'
+
+The following object is masked from 'package:tidyr':
+
+    extract</preformat>
+      <code language="r script">library(dplyr)
+library(sf)</code>
+      <preformat>Linking to GEOS 3.13.0, GDAL 3.8.5, PROJ 9.5.1; sf_use_s2() is TRUE</preformat>
+      <code language="r script">Invasive_data &lt;- read_csv("data/CO_INVASIVE_SUBPLOT_SPP.csv")</code>
+      <preformat>Rows: 3975 Columns: 17
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr   (2): VEG_FLDSPCD, VEG_SPCD
+dbl  (13): CN, PLT_CN, INVYR, STATECD, UNITCD, COUNTYCD, PLOT, SUBP, CONDID,...
+lgl   (1): MODIFIED_DATE
+dttm  (1): CREATED_DATE
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</preformat>
+      <code language="r script">Location_data &lt;- read_csv("data/CO_PLOTGEOM.csv")</code>
+      <preformat>Rows: 29168 Columns: 24
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr   (3): ECOSUBCD, ROADLESSCD, FVS_VARIANT
+dbl  (16): CN, STATECD, INVYR, UNITCD, COUNTYCD, PLOT, LAT, LON, CONGCD, HUC...
+lgl   (3): FVS_DISTRICT, ECO_UNIT_PNW, PRECIPITATION
+dttm  (2): CREATED_DATE, MODIFIED_DATE
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</preformat>
+      <code language="r script">Invasive_withLoc &lt;- inner_join(Invasive_data, Location_data, by = c("PLT_CN" = 'CN'))</code>
+      <p>Next I had to get the data to show as points on a map:</p>
+      <code language="r script">r = rast("/Users/chippymarx/Downloads/sl_forb_current.tiff")
+
+pts = Invasive_withLoc %&gt;% st_as_sf(coords = c("LON", 'LAT'), crs = 4326)
+
+if (interactive()) { mapview::mapview(pts) }</code>
+      <p>{r} r =
+  rast(“/Users/chippymarx/Downloads/sl_forb_current.tiff”)</p>
+      <p>pts = Invasive_withLoc %&gt;% st_as_sf(coords = c(“LON”, ‘LAT’),
+  crs = 4326)</p>
+      <p>if (interactive()) { mapview::mapview(pts) }</p>
+      <p>I was then able to get this visualization:</p>
+      <graphic mimetype="image" mime-subtype="png" xlink:href="img/USFSdataonmap.png"/>
+      <p>Next I had to limit the spatial data to Colorado :</p>
+      <p>Extract raster values at point locations and save them to a new
+  column:</p>
+      <code language="r script">pts$sl_forb_current = extract(r, pts)</code>
+      <preformat>Warning: [extract] transforming vector data to the CRS of the raster</preformat>
+      <code language="r script">#Create a bounding box around the points, convert to sf, and match CRS with raster:
+
+bb = st_bbox(pts) %&gt;% 
+  sf::st_as_sfc() %&gt;% 
+  st_as_sf() %&gt;% 
+  st_transform(crs(r))
+
+#Crop the raster to the extent of the bounding box
+
+cc = crop(r, bb)
+
+#Plot the cropped raster
+
+plot(cc) </code>
+      <graphic mimetype="image" mime-subtype="png" xlink:href="index_files/figure-jats/unnamed-chunk-3-1.png"/>
+      <graphic mimetype="image" mime-subtype="png" xlink:href="img/rastercroppedtoCO.png"/>
+      <p>That produced the above image which is the spatial data showing
+  forb invasion risk in Colorado.</p>
+      <p>Then to get them to overlay eachother, I did these steps :</p>
+      <code language="r script"># Add the (reprojected) points on top of the cropped raster in red
+plot(cc)
+plot(project(vect(pts), crs(r)), add = TRUE, col = "red", pch = 16)</code>
+      <graphic mimetype="image" mime-subtype="png" xlink:href="index_files/figure-jats/unnamed-chunk-4-1.png"/>
+      <graphic mimetype="image" mime-subtype="png" xlink:href="img/overlayingdata.png"/>
+      <p>I am still trying to learn how to work with spatial data and need
+  some additional help with getting to a testing phase, but will be in
+  office hours tomorrow.</p>
+      <p>
+        <underline>
+          <bold>Methods</bold>
+        </underline>
+      </p>
+      <p>The first test we will run will be to model the influence of a
+  functional group of invasive species to see how that affects the
+  projection for fire and an invasive return interval. We will try out
+  several models including a linear regression, random forest, and
+  Xgboost. We will also use a Bayesian model to get uncertainty
+  estimates and a more flexible hierarchical structure to represent
+  random effects for the region or species. We will find the best model
+  and then we can use that to make projection predictions for sites that
+  we don’t have projection data for.  </p>
+      <p>The second test we will run is an ANOVA test. With this test we
+  will see if the mean invasion risk across our sights vary
+  significantly. We could also potentially see if the risk of forbs or
+  grasses are significantly different. We could also use this test to
+  see if different burn severitys lead to different invasion risk. </p>
+      <p>I believe that we have all the data we need for this project
+  between our two datasets. One piece of supplemental data that might be
+  useful  is data showing forest fires in Colorado. This would allow us
+  to explore urn severity and its correlation to invasion risk. I think
+  GIS or another form of spatial data would be ideal for this, but we
+  are not sure if we will be able to do this on top of the other goals
+  we have outlined.</p>
+      <p>A potential challenge is that our historic data counts invasive
+  species, while the projection data projects invasion risk. Therefore
+  we are going to have to figure out a way to make the two different
+  types of data comparable. I think that a visualization of invasive
+  cover could be useful and might help to bridge that gap. </p>
+      <p>Along with handling spatial data, we also grapple with how we carry
+  out our approaches. In addition to ANOVA, linear regression, random
+  forest, and XGBoost models will be used to assess associations between
+  fire severity, vegetation cover, and invasion threat. These models
+  will inform us of linear and non-linear relationships and allow us to
+  assess predictive performance. Spatial autocorrelation is also an
+  issue as it could affect results if areas close to one another are too
+  alike each other. Finally, as invasion and fire are persistent
+  processes, it could be difficult to see evident patterns with
+  predominantly new data, and therefore model calibration and validation
+  would be an important part of our methodology.</p>
+      <p>The methods including ANOVA and learning models like random forest
+  and XGBoost, will enable us to identify the most important predictors
+  of invasive species spread and their effects on fire return intervals.
+  Using a suite of methods, we will assess the extent to which different
+  factors—like fire severity and region—drive invasion risk and enable
+  us to predict future invasive species patterns across Colorado. We
+  hope to apply these methods to improve our knowledge of how invasive
+  species are altering fire return intervals and ecosystem health,
+  guiding management and restoration.</p>
+    </sec>
+  </body>
+  <back>
+    <ref-list>
+      <title/>
+      <ref id="ref-escobedo2024native">
+        <element-citation publication-type="article-journal">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Escobedo</surname>
+              <given-names>Vı́ctor M</given-names>
+            </name>
+            <name>
+              <surname>Acuña-Rodrı́guez</surname>
+              <given-names>Ian S</given-names>
+            </name>
+            <name>
+              <surname>Garcı́a</surname>
+              <given-names>Leidy Y</given-names>
+            </name>
+            <name>
+              <surname>Torres-Dı́az</surname>
+              <given-names>Cristian</given-names>
+            </name>
+            <name>
+              <surname>Atala</surname>
+              <given-names>Cristian</given-names>
+            </name>
+            <name>
+              <surname>Suazo</surname>
+              <given-names>Manuel J</given-names>
+            </name>
+            <name>
+              <surname>Gómez-González</surname>
+              <given-names>Susana</given-names>
+            </name>
+            <name>
+              <surname>Newsham</surname>
+              <given-names>Kevin K</given-names>
+            </name>
+            <name>
+              <surname>Molina-Montenegro</surname>
+              <given-names>Marco A</given-names>
+            </name>
+          </person-group>
+          <article-title>Native woody species depend on the soil microbiome to establish on burned soils, while non-native do not</article-title>
+          <source>Journal of Applied Ecology</source>
+          <publisher-name>Wiley Online Library</publisher-name>
+          <year iso-8601-date="2024">2024</year>
+          <volume>61</volume>
+          <issue>12</issue>
+          <fpage>2971</fpage>
+          <lpage>2984</lpage>
+        </element-citation>
+      </ref>
+      <ref id="ref-prevey2024non">
+        <element-citation publication-type="article-journal">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Prevéy</surname>
+              <given-names>Janet S</given-names>
+            </name>
+            <name>
+              <surname>Jarnevich</surname>
+              <given-names>Catherine S</given-names>
+            </name>
+            <name>
+              <surname>Pearse</surname>
+              <given-names>Ian S</given-names>
+            </name>
+            <name>
+              <surname>Munson</surname>
+              <given-names>Seth M</given-names>
+            </name>
+            <name>
+              <surname>Stevens</surname>
+              <given-names>Jens T</given-names>
+            </name>
+            <name>
+              <surname>Barrett</surname>
+              <given-names>Kevin J</given-names>
+            </name>
+            <name>
+              <surname>Coop</surname>
+              <given-names>Jonathan D</given-names>
+            </name>
+            <name>
+              <surname>Day</surname>
+              <given-names>Michelle A</given-names>
+            </name>
+            <name>
+              <surname>Firmage</surname>
+              <given-names>David</given-names>
+            </name>
+            <name>
+              <surname>Fornwalt</surname>
+              <given-names>Paula J</given-names>
+            </name>
+            <etal/>
+          </person-group>
+          <article-title>Non-native plant invasion after fire in western USA varies by functional type and with climate</article-title>
+          <source>Biological Invasions</source>
+          <publisher-name>Springer</publisher-name>
+          <year iso-8601-date="2024">2024</year>
+          <volume>26</volume>
+          <issue>4</issue>
+          <fpage>1157</fpage>
+          <lpage>1179</lpage>
+        </element-citation>
+      </ref>
+      <ref id="ref-gallardo2016global">
+        <element-citation publication-type="article-journal">
+          <person-group person-group-type="author">
+            <name>
+              <surname>Gallardo</surname>
+              <given-names>Belinda</given-names>
+            </name>
+            <name>
+              <surname>Clavero</surname>
+              <given-names>Miguel</given-names>
+            </name>
+            <name>
+              <surname>Sánchez</surname>
+              <given-names>Marta I</given-names>
+            </name>
+            <name>
+              <surname>Vilà</surname>
+              <given-names>Montserrat</given-names>
+            </name>
+          </person-group>
+          <article-title>Global ecological impacts of invasive species in aquatic ecosystems</article-title>
+          <source>Global change biology</source>
+          <publisher-name>Wiley Online Library</publisher-name>
+          <year iso-8601-date="2016">2016</year>
+          <volume>22</volume>
+          <issue>1</issue>
+          <fpage>151</fpage>
+          <lpage>163</lpage>
+        </element-citation>
+      </ref>
+    </ref-list>
+  </back>
+  <sub-article article-type="notebook" id="nb-7-nb-article">
+    <front-stub>
+      <title-group>
+        <article-title>Ess 330 Project Intro/methods</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" corresp="yes">
+          <name>
+            <surname>Marx</surname>
+            <given-names>Chippy</given-names>
+          </name>
+          <string-name>Chippy Marx</string-name>
+          <role vocab="https://credit.niso.org" vocab-term="writing – original draft" vocab-term-identifier="https://credit.niso.org/contributor-roles/writing-original-draft/">writing</role>
+          <xref ref-type="aff" rid="aff-1-nb-article">a</xref>
+          <xref ref-type="corresp" rid="cor-1-nb-article">*</xref>
+        </contrib>
+        <contrib contrib-type="author">
+          <name>
+            <surname>Drew</surname>
+            <given-names>Chris</given-names>
+          </name>
+          <string-name>Chris Drew</string-name>
+          <role vocab="https://credit.niso.org" vocab-term="writing – original draft" vocab-term-identifier="https://credit.niso.org/contributor-roles/writing-original-draft/">writing</role>
+          <xref ref-type="aff" rid="aff-1-nb-article">a</xref>
+        </contrib>
+      </contrib-group>
+      <aff id="aff-1-nb-article">
+        <institution-wrap>
+          <institution>CSU</institution>
+        </institution-wrap>
+      </aff>
+      <author-notes>
+        <corresp id="cor-1-nb-article"/>
+      </author-notes>
+    </front-stub>
+    <body>
+      <sec id="reburn-and-return-how-invasive-species-influence-fire-return-intervals-in-colorado.-nb-article">
+        <title>
+          <italic>Reburn and Return: How Invasive Species Influence Fire
+  Return Intervals in Colorado.</italic>
+        </title>
+        <p>
+          <underline>
+            <bold>Introduction, Background and
+  Motivation</bold>
+          </underline>
+        </p>
+        <p>Invasive plants and forest fires are significant issues in
+  Colorado. Fire intensity and frequency, as well as the dominance of
+  invasive species  are increasing in Colorado.   Invasions by
+  non-native plant species after fire can negatively impact important
+  ecosystem services and lead to invasion-fire cycles, which ultimately
+  further degrade ecosystems Prevéy et al.
+  (<xref alt="2024" rid="ref-prevey2024non-nb-article" ref-type="bibr">2024</xref>)
+  . Invasive species have negative impacts on ecosystems not limited to
+  fire return intervals. Some of these impacts are disruption of species
+  interactions, impact on successional recovery, introduction and spread
+  of diseases, reduction in native species diversity, and economic
+  losses Gallardo, Clavero, Sánchez, &amp; Vilà
+  (<xref alt="2016" rid="ref-gallardo2016global-nb-article" ref-type="bibr">2016</xref>). </p>
+        <p>Certain invasive species can alter fire frequencies and
+  intensities, potentially increasing the occurrence of wildfires
+  Gallardo et al.
+  (<xref alt="2016" rid="ref-gallardo2016global-nb-article" ref-type="bibr">2016</xref>)
+  . The influence of non-native species on forest fire regimes is
+  complex and varies by vegetative functional type and geographic region
+  Prevéy et al.
+  (<xref alt="2024" rid="ref-prevey2024non-nb-article" ref-type="bibr">2024</xref>).
+  This project will examine how different functional groups of invasive
+  species impact fire return intervals, re-establishment rates, and
+  expansion across Colorado. </p>
+        <p>Furthermore, it has been established that native  species rely on
+  soil microbiomes to establish on burned soil, while non-native do not;
+  this makes non-natives more likely to establish quickly after forest
+  fires and then dominate these disturbed sites Escobedo et al.
+  (<xref alt="2024" rid="ref-escobedo2024native-nb-article" ref-type="bibr">2024</xref>).
+  However, scientific understanding of how to restore plant-soil
+  microbiome interactions after wildfires remains limited, leading to a
+  key knowledge gap in post- fire ecosystem restoration Escobedo et al.
+  (<xref alt="2024" rid="ref-escobedo2024native-nb-article" ref-type="bibr">2024</xref>).
+  Escobedo’s research was done in a greenhouse in Chile, measuring
+  establishment of native vs. non-native species in burned , unburned,
+  and burned soil that was inoculated with native microbiome species
+  Escobedo et al.
+  (<xref alt="2024" rid="ref-escobedo2024native-nb-article" ref-type="bibr">2024</xref>). 
+  The study found that burned soil had higher levels of available
+  nutrients, which benefited non-native species Escobedo et al.
+  (<xref alt="2024" rid="ref-escobedo2024native-nb-article" ref-type="bibr">2024</xref>).
+  Furthermore, this study found that native species relied on the native
+  microbiome while non-natives did not Escobedo et al.
+  (<xref alt="2024" rid="ref-escobedo2024native-nb-article" ref-type="bibr">2024</xref>).
+  Taking this study into account, once we see what invasive species are
+  an issue in Colorado relating to fire intervals, and then use
+  information about plant-soil microbiome interactions from Escobedo to
+  see if this interaction could be furthering the issue. We are not sure
+  exactly how this information will be used, but since it is relevant,
+  we want to keep the option open to explore it. It is likely outside
+  the scope of our research, but we are open to including it if we can
+  find a way to.</p>
+        <p> In this project, we will compare eight burned sites across
+  Colorado that have experienced wildfires within the past 20 years.
+  Sites will be selected to represent a range of geographic regions and
+  burn severities, enabling analysis of how different conditions
+  influence invasive species dynamics. In addition, two unburned sites
+  serving as control locations will be selected from areas with no
+  recorded wildfires during the same period. This site selection
+  strategy aims to capture variability in post-fire plant communities
+  and better understand the relationship between invasive species
+  re-establishment risk and fire severity. </p>
+        <p>
+          <underline>
+            <bold>Data exploration</bold>
+          </underline>
+        </p>
+        <p>The main dataset we will be using is current and future projection
+  post-ire invasion risk by non-native short lived forbs and grasses
+  Prevéy et al.
+  (<xref alt="2024" rid="ref-prevey2024non-nb-article" ref-type="bibr">2024</xref>).
+  This data is based on vegetation cover data from plots in the Western
+  U.S that burned prior to sampling. Projected invasion risks post-fire
+  were calculated using random forests with gridded climate, topographic
+  predictor, and soil variables by Prevéy et al.
+  (<xref alt="2024" rid="ref-prevey2024non-nb-article" ref-type="bibr">2024</xref>)
+  .We will use the data projected under a high emission scenario. </p>
+        <p>We will also use data from the USFS from 2005 that tracks invasive
+  species prominence
+  ( <ext-link ext-link-type="uri" xlink:href="https://research.fs.usda.gov/products/dataandtools/fia-datamart">https://research.fs.usda.gov/products/dataandtools/fia-datamart</ext-link>
+  ). We will compare a total of 10 sites in Colorado that we will
+  compare, trying to spread our sites out geographically and by severity
+  of burn. We will pick sites that had been surveyed in 2005 and are
+  also included in the projection data. </p>
+        <p>Our projection data is in a spatial format, so we will need to
+  extract data from longitude and latitude of the sites we select. We
+  will also need data that shows fires in Colorado going back to at
+  least 2005 that will include fire severity. </p>
+        <p>In order to see where our spatial data and historic data overlap ,
+  we had to take several steps. First I had to find a secondary dataset
+  from the USFS that had latitude and longitude. Then, I preformed an
+  innerjoin to get location information assigned to the sites:</p>
+        <sec specific-use="notebook-content">
+          <code language="r script">library(tidyverse)</code>
+          <boxed-text>
+            <preformat>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+✔ lubridate 1.9.4     ✔ tidyr     1.3.1
+✔ purrr     1.0.2     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</preformat>
+          </boxed-text>
+          <code language="r script">library(terra)</code>
+          <boxed-text>
+            <preformat>terra 1.8.42
+
+Attaching package: 'terra'
+
+The following object is masked from 'package:tidyr':
+
+    extract</preformat>
+          </boxed-text>
+          <code language="r script">library(dplyr)
+library(sf)</code>
+          <boxed-text>
+            <preformat>Linking to GEOS 3.13.0, GDAL 3.8.5, PROJ 9.5.1; sf_use_s2() is TRUE</preformat>
+          </boxed-text>
+          <code language="r script">Invasive_data &lt;- read_csv("data/CO_INVASIVE_SUBPLOT_SPP.csv")</code>
+          <boxed-text>
+            <preformat>Rows: 3975 Columns: 17
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr   (2): VEG_FLDSPCD, VEG_SPCD
+dbl  (13): CN, PLT_CN, INVYR, STATECD, UNITCD, COUNTYCD, PLOT, SUBP, CONDID,...
+lgl   (1): MODIFIED_DATE
+dttm  (1): CREATED_DATE
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</preformat>
+          </boxed-text>
+          <code language="r script">Location_data &lt;- read_csv("data/CO_PLOTGEOM.csv")</code>
+          <boxed-text>
+            <preformat>Rows: 29168 Columns: 24
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr   (3): ECOSUBCD, ROADLESSCD, FVS_VARIANT
+dbl  (16): CN, STATECD, INVYR, UNITCD, COUNTYCD, PLOT, LAT, LON, CONGCD, HUC...
+lgl   (3): FVS_DISTRICT, ECO_UNIT_PNW, PRECIPITATION
+dttm  (2): CREATED_DATE, MODIFIED_DATE
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</preformat>
+          </boxed-text>
+          <code language="r script">Invasive_withLoc &lt;- inner_join(Invasive_data, Location_data, by = c("PLT_CN" = 'CN'))</code>
+        </sec>
+        <p>Next I had to get the data to show as points on a map:</p>
+        <sec specific-use="notebook-content">
+          <code language="r script">r = rast("/Users/chippymarx/Downloads/sl_forb_current.tiff")
+
+pts = Invasive_withLoc %&gt;% st_as_sf(coords = c("LON", 'LAT'), crs = 4326)
+
+if (interactive()) { mapview::mapview(pts) }</code>
+        </sec>
+        <p>{r} r =
+  rast(“/Users/chippymarx/Downloads/sl_forb_current.tiff”)</p>
+        <p>pts = Invasive_withLoc %&gt;% st_as_sf(coords = c(“LON”, ‘LAT’),
+  crs = 4326)</p>
+        <p>if (interactive()) { mapview::mapview(pts) }</p>
+        <p>I was then able to get this visualization:</p>
+        <graphic mimetype="image" mime-subtype="png" xlink:href="img/USFSdataonmap.png"/>
+        <p>Next I had to limit the spatial data to Colorado :</p>
+        <p>Extract raster values at point locations and save them to a new
+  column:</p>
+        <sec specific-use="notebook-content">
+          <code language="r script">pts$sl_forb_current = extract(r, pts)</code>
+          <boxed-text>
+            <preformat>Warning: [extract] transforming vector data to the CRS of the raster</preformat>
+          </boxed-text>
+          <code language="r script">#Create a bounding box around the points, convert to sf, and match CRS with raster:
+
+bb = st_bbox(pts) %&gt;% 
+  sf::st_as_sfc() %&gt;% 
+  st_as_sf() %&gt;% 
+  st_transform(crs(r))
+
+#Crop the raster to the extent of the bounding box
+
+cc = crop(r, bb)
+
+#Plot the cropped raster
+
+plot(cc) </code>
+          <graphic mimetype="image" mime-subtype="png" xlink:href="index_files/figure-jats/unnamed-chunk-3-1.png"/>
+        </sec>
+        <graphic mimetype="image" mime-subtype="png" xlink:href="img/rastercroppedtoCO.png"/>
+        <p>That produced the above image which is the spatial data showing
+  forb invasion risk in Colorado.</p>
+        <p>Then to get them to overlay eachother, I did these steps :</p>
+        <sec specific-use="notebook-content">
+          <code language="r script"># Add the (reprojected) points on top of the cropped raster in red
+plot(cc)
+plot(project(vect(pts), crs(r)), add = TRUE, col = "red", pch = 16)</code>
+          <graphic mimetype="image" mime-subtype="png" xlink:href="index_files/figure-jats/unnamed-chunk-4-1.png"/>
+        </sec>
+        <graphic mimetype="image" mime-subtype="png" xlink:href="img/overlayingdata.png"/>
+        <p>I am still trying to learn how to work with spatial data and need
+  some additional help with getting to a testing phase, but will be in
+  office hours tomorrow.</p>
+        <p>
+          <underline>
+            <bold>Methods</bold>
+          </underline>
+        </p>
+        <p>The first test we will run will be to model the influence of a
+  functional group of invasive species to see how that affects the
+  projection for fire and an invasive return interval. We will try out
+  several models including a linear regression, random forest, and
+  Xgboost. We will also use a Bayesian model to get uncertainty
+  estimates and a more flexible hierarchical structure to represent
+  random effects for the region or species. We will find the best model
+  and then we can use that to make projection predictions for sites that
+  we don’t have projection data for.  </p>
+        <p>The second test we will run is an ANOVA test. With this test we
+  will see if the mean invasion risk across our sights vary
+  significantly. We could also potentially see if the risk of forbs or
+  grasses are significantly different. We could also use this test to
+  see if different burn severitys lead to different invasion risk. </p>
+        <p>I believe that we have all the data we need for this project
+  between our two datasets. One piece of supplemental data that might be
+  useful  is data showing forest fires in Colorado. This would allow us
+  to explore urn severity and its correlation to invasion risk. I think
+  GIS or another form of spatial data would be ideal for this, but we
+  are not sure if we will be able to do this on top of the other goals
+  we have outlined.</p>
+        <p>A potential challenge is that our historic data counts invasive
+  species, while the projection data projects invasion risk. Therefore
+  we are going to have to figure out a way to make the two different
+  types of data comparable. I think that a visualization of invasive
+  cover could be useful and might help to bridge that gap. </p>
+        <p>Along with handling spatial data, we also grapple with how we carry
+  out our approaches. In addition to ANOVA, linear regression, random
+  forest, and XGBoost models will be used to assess associations between
+  fire severity, vegetation cover, and invasion threat. These models
+  will inform us of linear and non-linear relationships and allow us to
+  assess predictive performance. Spatial autocorrelation is also an
+  issue as it could affect results if areas close to one another are too
+  alike each other. Finally, as invasion and fire are persistent
+  processes, it could be difficult to see evident patterns with
+  predominantly new data, and therefore model calibration and validation
+  would be an important part of our methodology.</p>
+        <p>The methods including ANOVA and learning models like random forest
+  and XGBoost, will enable us to identify the most important predictors
+  of invasive species spread and their effects on fire return intervals.
+  Using a suite of methods, we will assess the extent to which different
+  factors—like fire severity and region—drive invasion risk and enable
+  us to predict future invasive species patterns across Colorado. We
+  hope to apply these methods to improve our knowledge of how invasive
+  species are altering fire return intervals and ecosystem health,
+  guiding management and restoration.</p>
+      </sec>
+    </body>
+    <back>
+      <ref-list>
+        <title/>
+        <ref id="ref-escobedo2024native-nb-article">
+          <element-citation publication-type="article-journal">
+            <person-group person-group-type="author">
+              <name>
+                <surname>Escobedo</surname>
+                <given-names>Vı́ctor M</given-names>
+              </name>
+              <name>
+                <surname>Acuña-Rodrı́guez</surname>
+                <given-names>Ian S</given-names>
+              </name>
+              <name>
+                <surname>Garcı́a</surname>
+                <given-names>Leidy Y</given-names>
+              </name>
+              <name>
+                <surname>Torres-Dı́az</surname>
+                <given-names>Cristian</given-names>
+              </name>
+              <name>
+                <surname>Atala</surname>
+                <given-names>Cristian</given-names>
+              </name>
+              <name>
+                <surname>Suazo</surname>
+                <given-names>Manuel J</given-names>
+              </name>
+              <name>
+                <surname>Gómez-González</surname>
+                <given-names>Susana</given-names>
+              </name>
+              <name>
+                <surname>Newsham</surname>
+                <given-names>Kevin K</given-names>
+              </name>
+              <name>
+                <surname>Molina-Montenegro</surname>
+                <given-names>Marco A</given-names>
+              </name>
+            </person-group>
+            <article-title>Native woody species depend on the soil microbiome to establish on burned soils, while non-native do not</article-title>
+            <source>Journal of Applied Ecology</source>
+            <publisher-name>Wiley Online Library</publisher-name>
+            <year iso-8601-date="2024">2024</year>
+            <volume>61</volume>
+            <issue>12</issue>
+            <fpage>2971</fpage>
+            <lpage>2984</lpage>
+          </element-citation>
+        </ref>
+        <ref id="ref-prevey2024non-nb-article">
+          <element-citation publication-type="article-journal">
+            <person-group person-group-type="author">
+              <name>
+                <surname>Prevéy</surname>
+                <given-names>Janet S</given-names>
+              </name>
+              <name>
+                <surname>Jarnevich</surname>
+                <given-names>Catherine S</given-names>
+              </name>
+              <name>
+                <surname>Pearse</surname>
+                <given-names>Ian S</given-names>
+              </name>
+              <name>
+                <surname>Munson</surname>
+                <given-names>Seth M</given-names>
+              </name>
+              <name>
+                <surname>Stevens</surname>
+                <given-names>Jens T</given-names>
+              </name>
+              <name>
+                <surname>Barrett</surname>
+                <given-names>Kevin J</given-names>
+              </name>
+              <name>
+                <surname>Coop</surname>
+                <given-names>Jonathan D</given-names>
+              </name>
+              <name>
+                <surname>Day</surname>
+                <given-names>Michelle A</given-names>
+              </name>
+              <name>
+                <surname>Firmage</surname>
+                <given-names>David</given-names>
+              </name>
+              <name>
+                <surname>Fornwalt</surname>
+                <given-names>Paula J</given-names>
+              </name>
+              <etal/>
+            </person-group>
+            <article-title>Non-native plant invasion after fire in western USA varies by functional type and with climate</article-title>
+            <source>Biological Invasions</source>
+            <publisher-name>Springer</publisher-name>
+            <year iso-8601-date="2024">2024</year>
+            <volume>26</volume>
+            <issue>4</issue>
+            <fpage>1157</fpage>
+            <lpage>1179</lpage>
+          </element-citation>
+        </ref>
+        <ref id="ref-gallardo2016global-nb-article">
+          <element-citation publication-type="article-journal">
+            <person-group person-group-type="author">
+              <name>
+                <surname>Gallardo</surname>
+                <given-names>Belinda</given-names>
+              </name>
+              <name>
+                <surname>Clavero</surname>
+                <given-names>Miguel</given-names>
+              </name>
+              <name>
+                <surname>Sánchez</surname>
+                <given-names>Marta I</given-names>
+              </name>
+              <name>
+                <surname>Vilà</surname>
+                <given-names>Montserrat</given-names>
+              </name>
+            </person-group>
+            <article-title>Global ecological impacts of invasive species in aquatic ecosystems</article-title>
+            <source>Global change biology</source>
+            <publisher-name>Wiley Online Library</publisher-name>
+            <year iso-8601-date="2016">2016</year>
+            <volume>22</volume>
+            <issue>1</issue>
+            <fpage>151</fpage>
+            <lpage>163</lpage>
+          </element-citation>
+        </ref>
+      </ref-list>
+    </back>
+  </sub-article>
+  <sub-article article-type="notebook" id="nb-4-nb-1">
+    <front-stub>
+      <title-group>
+        <article-title>Ess 330 Project Updates</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" corresp="yes">
+          <name>
+            <surname>Marx</surname>
+            <given-names>Chippy</given-names>
+          </name>
+          <string-name>Chippy Marx</string-name>
+          <role vocab="https://credit.niso.org" vocab-term="writing – original draft" vocab-term-identifier="https://credit.niso.org/contributor-roles/writing-original-draft/">writing</role>
+          <xref ref-type="aff" rid="aff-1-nb-1">a</xref>
+          <xref ref-type="corresp" rid="cor-1-nb-1">*</xref>
+        </contrib>
+        <contrib contrib-type="author">
+          <name>
+            <surname>Drew</surname>
+            <given-names>Chris</given-names>
+          </name>
+          <string-name>Chris Drew</string-name>
+          <role vocab="https://credit.niso.org" vocab-term="writing – original draft" vocab-term-identifier="https://credit.niso.org/contributor-roles/writing-original-draft/">writing</role>
+          <xref ref-type="aff" rid="aff-1-nb-1">a</xref>
+        </contrib>
+      </contrib-group>
+      <aff id="aff-1-nb-1">
+        <institution-wrap>
+          <institution>CSU</institution>
+        </institution-wrap>
+      </aff>
+      <author-notes>
+        <corresp id="cor-1-nb-1"/>
+      </author-notes>
+    </front-stub>
+    <body>
+      <sec id="methods-nb-1">
+        <title>Methods</title>
+        <p>
+          <bold>Data importing and initial cleaning</bold>
+        </p>
+        <p>Before we could do any of our analysis, we had to import our
+  projected spatial data, and extract the raster values from it. The
+  historic invasive species data we had did not have latitude and
+  longitude, which was important for  analysis, so we found a dataset
+  that had these values and shared site identifier values. We did an
+  inner-join on these two datasets, and then selected only the
+  attributes we would need for analysis to make the dataset smaller,
+  filtered to the year we were interested in (2007), and removed missing
+  values.  We had to prepare the spatial point data with the extracted
+  raster values by filtering and formatting the dataset so that it was
+  clean. Then, we  transformed the coordinate system of our historic
+  data in order to match that of the raster data , or our projected
+  dataset. Next we extracted the raster values from our projected
+  dataset for the sites we had in our historic data set. We then binded
+  these extracted values with the points in our historic dataset to
+  create a new dataset where each row had both spatial and
+  raster-derived information.</p>
+        <sec specific-use="notebook-content">
+          <code language="r script">library(tidyverse)
+  </code>
+          <boxed-text>
+            <preformat>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   3.5.2     ✔ tibble    3.2.1
+✔ lubridate 1.9.4     ✔ tidyr     1.3.1
+✔ purrr     1.0.4     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</preformat>
+          </boxed-text>
+          <code language="r script">library(tidymodels)
+  </code>
+          <boxed-text>
+            <preformat>── Attaching packages ────────────────────────────────────── tidymodels 1.2.0 ──
+✔ broom        1.0.7     ✔ rsample      1.2.1
+✔ dials        1.3.0     ✔ tune         1.2.1
+✔ infer        1.0.7     ✔ workflows    1.1.4
+✔ modeldata    1.4.0     ✔ workflowsets 1.1.0
+✔ parsnip      1.2.1     ✔ yardstick    1.3.2
+✔ recipes      1.1.0     
+── Conflicts ───────────────────────────────────────── tidymodels_conflicts() ──
+✖ scales::discard() masks purrr::discard()
+✖ dplyr::filter()   masks stats::filter()
+✖ recipes::fixed()  masks stringr::fixed()
+✖ dplyr::lag()      masks stats::lag()
+✖ yardstick::spec() masks readr::spec()
+✖ recipes::step()   masks stats::step()
+• Use suppressPackageStartupMessages() to eliminate package startup messages</preformat>
+          </boxed-text>
+          <code language="r script">library(terra)
+  </code>
+          <boxed-text>
+            <preformat>terra 1.8.42
+
+Attaching package: 'terra'
+
+The following object is masked from 'package:scales':
+
+    rescale
+
+The following object is masked from 'package:tidyr':
+
+    extract</preformat>
+          </boxed-text>
+          <code language="r script">library(dplyr)
+library(sf)
+  </code>
+          <boxed-text>
+            <preformat>Linking to GEOS 3.13.0, GDAL 3.8.5, PROJ 9.5.1; sf_use_s2() is TRUE</preformat>
+          </boxed-text>
+          <code language="r script">library(ranger)
+library(ggplot2)
+library(tidyr)
+  </code>
+        </sec>
+        <sec specific-use="notebook-content">
+          <code language="r script"># bring in forb data 
+r &lt;- rast(c(
+  "data/sl_forb_current.tiff",
+  "data/sl_forb_mid_585.tiff",
+  "data/sl_forb_late_585.tiff"
+))
+
+#bring in grass data 
+g &lt;- rast(c('data/sl_grass_current.tiff','data/sl_grass_late_585.tiff', 'data/sl_grass_mid_585.tiff' ))
+
+
+# Load and join historic  data
+Invasive_data &lt;- read_csv("data/CO_INVASIVE_SUBPLOT_SPP.csv")
+  </code>
+          <boxed-text>
+            <preformat>Rows: 3975 Columns: 17
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr   (2): VEG_FLDSPCD, VEG_SPCD
+dbl  (13): CN, PLT_CN, INVYR, STATECD, UNITCD, COUNTYCD, PLOT, SUBP, CONDID,...
+lgl   (1): MODIFIED_DATE
+dttm  (1): CREATED_DATE
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</preformat>
+          </boxed-text>
+          <code language="r script">Location_data &lt;- read_csv("data/CO_PLOTGEOM.csv")
+  </code>
+          <boxed-text>
+            <preformat>Rows: 29168 Columns: 24
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr   (3): ECOSUBCD, ROADLESSCD, FVS_VARIANT
+dbl  (16): CN, STATECD, INVYR, UNITCD, COUNTYCD, PLOT, LAT, LON, CONGCD, HUC...
+lgl   (3): FVS_DISTRICT, ECO_UNIT_PNW, PRECIPITATION
+dttm  (2): CREATED_DATE, MODIFIED_DATE
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</preformat>
+          </boxed-text>
+          <code language="r script">Invasive_withLoc &lt;- inner_join(Invasive_data, Location_data, by = c("PLT_CN" = "CN"))
+
+# Filter and clean historic data 
+TMP &lt;- Invasive_withLoc %&gt;%
+  select(PLT_CN, LAT, INVYR.x, LON, VEG_FLDSPCD, COVER_PCT) %&gt;%
+  filter(INVYR.x == 2007) %&gt;%
+  drop_na()
+
+# Convert the historic data frame into a spatial object using longitude and latitude coordinates.
+# Retain original coordinate columns and set the CRS to WGS84 (EPSG:4326).
+pts = TMP %&gt;% 
+  st_as_sf(coords = c("LON", 'LAT'), remove = FALSE, crs = 4326) %&gt;% 
+  distinct()
+  </code>
+        </sec>
+        <p>
+          <bold>Test 1: Visualizations</bold>
+        </p>
+        <sec specific-use="notebook-content">
+          <code language="r script">#sites we will select, project
+site_ids = c(12224885010690, 12221198010690, 12223803010690, 12206792010690, 12222071010690, 1223416010690, 12225851010690, 12232600010690, 12212814010690,     12214073010690  ) 
+
+#filer spatial data to only include the 10 sites of interest, then reproject. 
+ex_pts = pts %&gt;% 
+  filter(PLT_CN %in% site_ids) %&gt;% 
+  st_transform(crs(r))
+
+#extract raster values and bind comlums 
+v &lt;-  extract(r, ex_pts)
+ex_Pts_both = bind_cols(ex_pts, v)
+
+#do the same for grass data 
+ex_pts_g = pts %&gt;% 
+  filter(PLT_CN %in% site_ids) %&gt;% 
+  st_transform(crs(g))
+
+g &lt;-  extract(g, ex_pts_g)
+ex_Pts_both_g = bind_cols(ex_pts_g, g)
+
+ex_pts = pts %&gt;% 
+  filter(PLT_CN %in% site_ids) %&gt;% 
+  #distinct() %&gt;% 
+  st_transform(crs(r))
+
+v &lt;-  extract(r, ex_pts)
+ex_Pts_both = bind_cols(ex_pts, v)
+
+#point of this is ... for forb 
+df_long &lt;- ex_Pts_both %&gt;%
+  select(ID, COVER_PCT, sl_forb_current, sl_forb_mid_585, sl_forb_late_585) %&gt;%
+  pivot_longer(
+    cols = c(COVER_PCT, sl_forb_current, sl_forb_mid_585, sl_forb_late_585),
+    names_to = "variable",
+    values_to = "value"
+  )
+
+#for grass 
+df_long_g &lt;- ex_Pts_both_g %&gt;%
+  select(ID, COVER_PCT, sl_grass_current, sl_grass_mid_585, sl_grass_late_585) %&gt;%
+  pivot_longer(
+    cols = c(COVER_PCT, sl_grass_current, sl_grass_mid_585, sl_grass_late_585),
+    names_to = "variable",
+    values_to = "value"
+  )
+  </code>
+        </sec>
+        <sec specific-use="notebook-content">
+          <code language="r script"># Filter to 10 unique IDs
+ten_ids_forb &lt;- df_long %&gt;% 
+  distinct(ID) %&gt;%
+  slice_head(n = 10) %&gt;%
+  pull(ID)
+
+df_subset_forb &lt;- df_long %&gt;%
+  filter(ID %in% ten_ids_forb)
+
+# Convert ID to factor to preserve facet order
+df_subset_forb$ID &lt;- factor(df_subset_forb$ID)
+
+df_subset_forb &lt;- df_subset_forb %&gt;%
+  mutate(
+    variable = recode(variable,
+      "COVER_PCT" = "2007 (Observed)",
+      "sl_forb_current" = "Current (1981–2010)",
+      "sl_forb_mid_585" = "Mid-century (2041–2070)",
+      "sl_forb_late_585" = "Late-century (2071–2100)"
+    ),
+    scenario_label = case_when(
+      variable == "2007 (Observed)" ~ "2007",
+      variable == "Current (1981–2010)" ~ "Current",
+      variable == "Mid-century (2041–2070)" ~ "Mid-century",
+      variable == "Late-century (2071–2100)" ~ "Late-century",
+      TRUE ~ NA_character_  # catch unmatched cases
+    ),
+    scenario_label = factor(scenario_label, levels = c("2007", "Current", "Mid-century", "Late-century"))
+  ) %&gt;%
+  filter(!is.na(scenario_label))  # drop rows with NA scenario_label
+
+# Plot
+ggplot(df_subset_forb, aes(x = scenario_label, y = value, group = ID)) +
+  geom_line(aes(color = variable), linewidth = 1) +
+  geom_point(size = 2) +
+  facet_wrap(~ ID, scales = "fixed", nrow = 2) +
+  labs(
+    x = "Scenario",
+    y = "Cover Percentage",
+    title = "Forb Cover Change by Site (10 Sample IDs)",
+    color = "Scenario Timeframe"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    strip.text = element_text(size = 16, face = "bold"),
+    plot.title = element_text(hjust = 0.5)
+  )
+  </code>
+          <graphic mimetype="image" mime-subtype="png" xlink:href="results_files/figure-jats/unnamed-chunk-4-1.png"/>
+        </sec>
+        <sec specific-use="notebook-content">
+          <code language="r script"># Filter to 10 unique IDs
+ten_ids &lt;- df_long_g %&gt;% 
+  distinct(ID) %&gt;%
+  slice_head(n = 10) %&gt;%
+  pull(ID)
+
+df_subset &lt;- df_long_g %&gt;%
+  filter(ID %in% ten_ids)
+
+# Convert ID to factor to control facet order and labels
+df_subset$ID &lt;- factor(df_subset$ID)
+
+df_subset_grass &lt;- df_subset %&gt;%
+  mutate(
+    # Detailed labels for the legend
+    variable = recode(variable,
+      "COVER_PCT" = "2007 (Observed)",
+      "sl_grass_current" = "Current (1981–2010)",
+      "sl_grass_mid_585" = "Mid-century (2041–2070)",
+      "sl_grass_late_585" = "Late-century (2071–2100)"
+    ),
+    # Simplified x-axis labels
+    scenario_label = case_when(
+      variable == "2007 (Observed)" ~ "2007",
+      variable == "Current (1981–2010)" ~ "Current",
+      variable == "Mid-century (2041–2070)" ~ "Mid-century",
+      variable == "Late-century (2071–2100)" ~ "Late-century",
+      TRUE ~ NA_character_
+    ),
+    # Ensure factor order on x-axis
+    scenario_label = factor(scenario_label, levels = c("2007", "Current", "Mid-century", "Late-century"))
+  ) %&gt;%
+  filter(!is.na(scenario_label))  # remove any unmatched
+
+# Plot
+ggplot(df_subset_grass, aes(x = scenario_label, y = value, group = ID)) +
+  geom_line(aes(color = variable), linewidth = 1) +
+  geom_point(size = 2) +
+  facet_wrap(~ ID, scales = "fixed", nrow = 2) +
+  labs(
+    x = "Scenario",
+    y = "Cover Percentage",
+    title = "Grass Cover Change by Site (10 Sample IDs)",
+    color = "Scenario Timeframe"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    strip.text = element_text(size = 16, face = "bold"),
+    plot.title = element_text(hjust = 0.5)
+  )
+  </code>
+          <graphic mimetype="image" mime-subtype="png" xlink:href="results_files/figure-jats/unnamed-chunk-5-1.png"/>
+        </sec>
+        <p>
+          <bold>Building the reference map</bold>
+        </p>
+        <p>For these figures we wanted to create a reference map of where the
+  10 sites we chose were. To do this we laid our 10 sites (using their
+  lat and long values) on a map of Colorado. Next, we added the labels
+  of the sites to the data set. We had to transform the location values
+  back to lat and lon as we had projected them in the coordinate system
+  of our spatial data earlier. We then plotted this onto our map of
+  Colorado.</p>
+        <sec specific-use="notebook-content">
+          <code language="r script"># Get US state boundaries from base R maps
+usa &lt;- map_data("state")
+
+# Filter for Colorado
+colorado &lt;- usa %&gt;% filter(region == "colorado")
+
+# Step 1: Add labels BEFORE converting to lat/lon
+ex_pts$Label &lt;- as.character(1:nrow(ex_pts))
+
+# Step 2: Transform to lat/lon and extract coordinates
+ex_pts_latlon &lt;- st_transform(ex_pts, crs = 4326) %&gt;% 
+  mutate(
+    lon = st_coordinates(.)[, 1],
+    lat = st_coordinates(.)[, 2]
+  ) %&gt;%
+  st_drop_geometry()
+
+# Step 3: Group overlapping points and combine labels
+ex_pts_latlon_grouped &lt;- ex_pts_latlon %&gt;%
+  group_by(lon, lat) %&gt;%
+  summarise(Label = paste0("Site ", paste(Label, collapse = " &amp; ")), .groups = "drop")
+
+# Step 4: Plot
+ggplot() +
+  geom_polygon(data = colorado, aes(x = long, y = lat, group = group),
+               fill = "lightgreen", color = "grey") +
+  geom_point(data = ex_pts_latlon_grouped, aes(x = lon, y = lat), color = "darkgreen", size = 3) +
+  geom_text(data = ex_pts_latlon_grouped, aes(x = lon, y = lat, label = Label), 
+            nudge_y = 0.2, size = 5) +
+  coord_fixed(1.3) +
+  labs(title = "Monitoring Sites in Colorado", subtitle = "Sites labeled 1–10 (merged if overlapping)",
+       x = "Longitude", y = "Latitude") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 16, face = "bold"),
+    axis.text = element_blank(),
+    axis.ticks = element_blank()
+  )
+  </code>
+          <graphic mimetype="image" mime-subtype="png" xlink:href="results_files/figure-jats/unnamed-chunk-6-1.png"/>
+        </sec>
+        <p>
+          <bold>Test 2: Machine Learning</bold>
+        </p>
+        <p>The second test we are doing  is a machine learning model in order
+  to train a model to predict the percent cover of invasive forbs in the
+  projected late century (2080–2100) cover data  from our historic cover
+  data, the projected “current” cover (1981-2010), and the projected
+  mid-century cover (2040–2060).  While we are not done with this model,
+  we have taken several steps so far. </p>
+        <p> When we cleaned this dataset and created our combined historic and
+  projected datasets for the machine learning, to ensure useful
+  group-level analysis, we grouped the data by the classification in the
+  late century dataset, counted the number of observations in each
+  group, and filtered the data to retain only groups with more than 2
+  observations. We did this because models do not like to predict values
+  that only occur once in the dataset. After ungrouping the data, we
+  prepared it for modeling by converting the cover percentages in both
+  the historic and projected data to factor type, as we saw that
+  classification engines in the models worked better. </p>
+        <p>Next, we set a seed, did the initial split on our data, and set
+  resamples for modeling. We had to drop the geometry in our dataset, as
+  the models we chose do not support spatial data. We then defined our
+  recipe as described above. </p>
+        <p>We chose 3 candidate models: random forest (RF)(with a ranger
+  engine), Xgboost (Xgb) (with a xgboost engine), and a multilayer
+  perceptron (MLP)  (with a neural network engine) model. For all of
+  these models, the mode was set at classification because our data,
+  while numeric values, is categorical not continuous.  We chose the RF
+  model because it handles missing data and outliers well. We chose the
+  Xgb model because it is one of the best models in predictive taste,
+  especially for structured data. We chose the MLP model because it can
+  model complex, nonlinear patterns between predictors and outcomes, and
+  it was suggested to us because of the nature of our data . For each
+  model we defined a workflow.  Next, we defined our list of models for
+  comparison, and set the comparison metrics as Kappa and Accuracy.
+  Accuracy measures the proportion of correctly classified observations
+  out of all observations, and Kappa is a  measure of agreement between
+  the predicted and actual classifications, adjusted for chance
+  agreement (the level of agreement between predicted and actual
+  classifications that would be expected just by random guessing).</p>
+        <p>We then got stuck with our analysis, as we need to do more data
+  manipulation and model adjustments before we can run out models. The
+  next steps include making a workflow set with all the models, fitting
+  the workflows with cross-validation, and comparing the models based on
+  our comparison metrics. Once we know which model performs best, we can
+  pick a model, tune that model, find the best hyperparameters, and
+  finalize the workflow, getting predictions. </p>
+        <p>We do not know if we have chosen appropriate methods for this
+  analysis yet, as we cannot see any performance metrics until we work
+  out the kinks in our dataset and machine learning methods. </p>
+        <sec specific-use="notebook-content">
+          <code language="r script">ex_pts_Ml = pts %&gt;% 
+  st_transform(crs(r))
+
+v2&lt;-  extract(r, ex_pts_Ml)
+
+ex_Pts_ml_both &lt;- bind_cols(ex_pts_Ml, v2) %&gt;% 
+  group_by(sl_forb_late_585) %&gt;% 
+  mutate(n = n()) %&gt;% 
+  ungroup() %&gt;% 
+  filter(n &gt; 2) %&gt;% 
+  mutate(
+    sl_forb_current = as.factor(sl_forb_current),
+    sl_forb_mid_585 = as.factor(sl_forb_mid_585),
+    sl_forb_late_585 = as.factor(sl_forb_late_585),  
+    COVER_PCT = as.factor(COVER_PCT)
+  ) 
+
+ex_Pts_ml_both$sl_forb_late_585 %&gt;% table()
+  </code>
+          <boxed-text>
+            <preformat>.
+ 0  1  2  3  4 
+15 68 27 13  4 </preformat>
+          </boxed-text>
+        </sec>
+        <sec specific-use="notebook-content">
+          <code language="r script">#set seed, split data
+set.seed(32)
+ex_pts_both_split &lt;- initial_split(ex_Pts_ml_both, prop = 0.8, strata = sl_forb_late_585)
+ex_pts_train &lt;- training(ex_pts_both_split)
+ex_pts_test  &lt;- testing(ex_pts_both_split)
+
+#resamples 
+ex_both_cv &lt;- vfold_cv(ex_pts_train, v=10)
+
+#more cleaning 
+ex_Pts_ml_df &lt;- ex_Pts_ml_both %&gt;%
+  st_drop_geometry()
+
+# Then define your recipe
+forb_recipe &lt;- recipe(sl_forb_late_585 ~ sl_forb_mid_585 + sl_forb_current + COVER_PCT, data = ex_Pts_ml_df) %&gt;%
+  step_naomit(all_predictors(), all_outcomes()) %&gt;%
+  step_normalize(all_numeric_predictors())
+
+table(ex_Pts_ml_df$sl_forb_late_585)
+  </code>
+          <boxed-text>
+            <preformat>
+ 0  1  2  3  4 
+15 68 27 13  4 </preformat>
+          </boxed-text>
+          <code language="r script">#prep and bake 
+prep(forb_recipe) %&gt;% bake(new_data = NULL)
+  </code>
+          <boxed-text>
+            <preformat># A tibble: 127 × 4
+   sl_forb_mid_585 sl_forb_current COVER_PCT sl_forb_late_585
+   &lt;fct&gt;           &lt;fct&gt;           &lt;fct&gt;     &lt;fct&gt;           
+ 1 1               2               2         2               
+ 2 0               0               2         0               
+ 3 2               2               2         1               
+ 4 1               1               2         1               
+ 5 1               1               2         1               
+ 6 1               1               2         1               
+ 7 1               1               2         1               
+ 8 1               1               2         1               
+ 9 1               3               2         1               
+10 1               3               2         1               
+# ℹ 117 more rows</preformat>
+          </boxed-text>
+        </sec>
+        <sec specific-use="notebook-content">
+          <code language="r script">#define 3 candidate models and set workflows 
+
+rf_mod &lt;- rand_forest(trees = 500, mtry = 2) %&gt;%
+  set_engine("ranger") %&gt;%
+  set_mode("classification")
+
+rf_wf &lt;- workflow() %&gt;%
+  add_model(rf_mod) %&gt;%
+  add_recipe(forb_recipe)
+
+xgb_mod &lt;- boost_tree(trees = 500, learn_rate = 0.1) %&gt;%
+  set_engine("xgboost") %&gt;%
+  set_mode("classification")
+
+xgb_wf &lt;- workflow() %&gt;%
+  add_model(xgb_mod) %&gt;%
+  add_recipe(forb_recipe)
+
+nn_mod &lt;- mlp()%&gt;%
+  set_engine("nnet")%&gt;%
+  set_mode("classification")
+
+nn_wf &lt;- workflow() %&gt;% 
+  add_model(nn_mod) %&gt;% 
+  add_recipe(forb_recipe)
+  </code>
+        </sec>
+        <p>
+          <bold>Where we get stuck</bold>
+        </p>
+        <sec specific-use="notebook-content">
+          <code language="r script">#define list of models for comparison 
+#model_list &lt;- list(
+ # MLP= nn_mod,
+  #random_forest = rf_mod,
+  #xgboost = xgb_mod
+#)
+
+#define my metrics 
+#my_metrics &lt;- metric_set
+
+#create workflow set with all models 
+#wf_set &lt;- workflow_set(
+ # preproc = list(forb = forb_recipe),
+ # models = model_list
+#)
+#fit all worklows with cross-validation 
+#wf_results &lt;- wf_set %&gt;%
+  #workflow_map(resamples = ex_both_cv, metrics = my_metrics, verbose = TRUE)
+
+#next we would autoplot but this is where we got stuck after meeting with Mike and changing things around. 
+  </code>
+        </sec>
+        <sec specific-use="notebook-content">
+          <code language="r script">#specify tunable parameters 
+#xgb_mod_tuned &lt;- boost_tree(
+  #trees = tune(),
+  #learn_rate = tune(),
+  #tree_depth = tune()
+#) %&gt;%
+  #set_engine("xgboost") %&gt;%
+  #set_mode("classification")
+
+#create new workflow 
+#xgb_wf_tuned &lt;- workflow() %&gt;%
+  #add_model(xgb_mod_tuned) %&gt;%
+  #add_recipe(forb_recipe)
+
+#define tunable grid
+#xgb_grid &lt;- grid_regular(
+  #trees(range = c(100, 1000)),
+  #learn_rate(range = c(0.01, 0.3)),
+  #tree_depth(range = c(2, 10)),
+  #levels = 5
+#)
+#tune model with cross-validation
+#xgb_tuned_results &lt;- tune_grid(
+  #xgb_wf_tuned,
+  #resamples = ex_both_cv,
+  #grid = xgb_grid,
+  #metrics = my_metrics,
+  #control = control_grid(save_pred = TRUE)
+#)
+  </code>
+        </sec>
+        <sec specific-use="notebook-content">
+          <code language="r script">#evaluate and select the best model 
+#best_xgb &lt;- select_best(xgb_tuned_results, metric = "accuracy")
+
+#show_best(xgb_tuned_results)
+
+#autoplot(xgb_tuned_results)
+  </code>
+        </sec>
+        <sec specific-use="notebook-content">
+          <code language="r script">#finalize workflow with the best hyperparameters 
+#final_xgb_wf &lt;- finalize_workflow(xgb_wf_tuned, best_xgb)
+
+#final model veriication 
+#final_xgb_last &lt;- last_fit(
+  #final_xgb_wf,
+  #split = ex_pts_both_split
+#)
+# Collect performance metrics
+#collect_metrics(final_xgb_last)
+#collect predictions 
+#final_xgb_preds &lt;- collect_predictions(final_xgb_last)
+  </code>
+        </sec>
+        <sec specific-use="notebook-content">
+          <code language="r script">#names(final_xgb_preds)
+  </code>
+        </sec>
+        <sec specific-use="notebook-content">
+          <code language="r script">#ggplot(final_xgb_preds, aes(x = .pred, y = sl_forb_late_585)) +
+  #geom_point(alpha = 0.6, color = "steelblue") +
+  #geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "red") +
+  #labs(
+    #x = "Predicted",
+   # y = "Actual",
+  #  title = "Predicted vs. Actual - Final XGBoost Model"
+ # ) +
+ # theme_minimal()
+  </code>
+        </sec>
+      </sec>
+      <sec id="results-nb-1">
+        <title>Results</title>
+      </sec>
+      <sec id="discussion-nb-1">
+        <title>Discussion</title>
+      </sec>
+    </body>
+    <back>
+</back>
+  </sub-article>
+</article>
