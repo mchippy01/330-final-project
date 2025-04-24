@@ -67,6 +67,8 @@ pts = TMP %>%
 
 **Test 1: Visualizations**
 
+For this visual test we selected 10 sites from the map, trying to spread out across the state. We then created faceted scatter plots for 10 randomly selected sites of invasive forb and grass cover by three time points: Current, Mid-century (2040–2060), and Late-century (2080–2100) for the SSP585 climate scenario. The plots allowed us to examine visually vegetation cover trends without predictive modeling.
+
 ```{r}
 #sites we will select, project
 site_ids = c(12224885010690, 12221198010690, 12223803010690, 12206792010690, 12222071010690, 1223416010690,	12225851010690,	12232600010690, 12212814010690, 	12214073010690  ) 
@@ -469,4 +471,18 @@ nn_wf <- workflow() %>%
 
 # Results
 
+At this point, we only have results from our visual tests due to the complications with the machine learning models described above.
+
+The visualizations provide an initial look into how forb and grass cover may shift under the projected climate scenario (SSP585). Forb cover showed considerable variation across the 10 selected sites when comparing the “Current,” “Mid-century,” and “Late-century” projections. Some sites exhibited clear declines in forb cover over time, while others maintained relatively stable levels or showed modest increases.
+
+Grass cover showed a more consistent trend across sites. Most sites experienced a decline in grass cover across the three time periods. The one notable exception was the most westerly site, which displayed stability or a slight increase in grass cover under future climate projections.
+
 # Discussion
+
+Our initial visual observations suggest that both forb and grass cover can be significantly affected by projected late-century climate conditions. However, the response of these plant functional groups appears to vary by site and group.
+
+Forbs showed very variable patterns at sites. For example, some eastern slope sites had sharp forb declines, while others—those with unique microclimates or at higher elevations—had stable or even increasing forb cover. This diversity suggests that forb response to climate change potentially can be strongly site-specific, with localized environmental factors, species assemblages, or interactions not captured by large-scale climate variables being the decisive factors.
+
+In contrast, grass cover also decreased in a more uniform manner at most locations, particularly on the east-facing slope. Such homogeneity could be a sign of a broader sensitivity of grasses to the imposed changes in temperature and precipitation regimes. The only exception was the site farthest west, where grass cover was more stable or even slightly increasing, highlighting the importance of geographic and climatic context for controlling vegetation response.
+
+If model fitting proceeds, we aim to be able to compare model accuracy between algorithms (Random Forest, XGBoost, etc.) and interpret variable importance, ideally identifying the significant predictors of future vegetation change. This would allow us to better understand which climate-driven variables most propel changes in plant cover.
