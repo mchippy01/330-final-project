@@ -546,11 +546,11 @@ dbl (12): ID, sl_forb_current, sl_grass_current, sl_forb_mid_585, sl_grass_m...
 <pre><code># A tibble: 5 × 9
   wflow_id          .config preproc model .metric .estimator  mean     n std_err
   &lt;chr&gt;             &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;
-1 recipe_linear_reg Prepro… recipe  line… rsq     standard   0.573    10 0.0208 
-2 recipe_xgboost    Prepro… recipe  boos… rsq     standard   0.907    10 0.00609
-3 recipe_lightgbm   Prepro… recipe  boos… rsq     standard   0.925    10 0.00506
-4 recipe_mlp        Prepro… recipe  mlp   rsq     standard   0.675    10 0.0233 
-5 recipe_rand_fore… Prepro… recipe  rand… rsq     standard   0.950    10 0.00449</code></pre>
+1 recipe_linear_reg Prepro… recipe  line… rsq     standard   0.546    10 0.0355 
+2 recipe_xgboost    Prepro… recipe  boos… rsq     standard   0.891    10 0.0107 
+3 recipe_lightgbm   Prepro… recipe  boos… rsq     standard   0.922    10 0.00539
+4 recipe_mlp        Prepro… recipe  mlp   rsq     standard   0.657    10 0.0213 
+5 recipe_rand_fore… Prepro… recipe  rand… rsq     standard   0.948    10 0.00575</code></pre>
 </div>
 </div></div>
 <p>want to move forward with random forest model because it has the lowest root mean sqaured error and highest r-sqaured value.</p>
@@ -601,11 +601,11 @@ dbl (12): ID, sl_forb_current, sl_grass_current, sl_forb_mid_585, sl_grass_m...
 <pre><code># A tibble: 5 × 9
    mtry trees min_n .metric .estimator  mean     n std_err .config              
   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;                
-1     6  1167     2 rsq     standard   0.953    10 0.00432 Preprocessor1_Model17
-2     3   667     3 rsq     standard   0.953    10 0.00441 Preprocessor1_Model08
-3     7   417     6 rsq     standard   0.948    10 0.00464 Preprocessor1_Model20
-4     2  1416     5 rsq     standard   0.947    10 0.00525 Preprocessor1_Model06
-5     5  1833     8 rsq     standard   0.946    10 0.00464 Preprocessor1_Model13</code></pre>
+1     3   667     3 rsq     standard   0.951    10 0.00583 Preprocessor1_Model08
+2     6  1167     2 rsq     standard   0.951    10 0.00497 Preprocessor1_Model17
+3     7   417     6 rsq     standard   0.947    10 0.00522 Preprocessor1_Model20
+4     2  1416     5 rsq     standard   0.946    10 0.00642 Preprocessor1_Model06
+5     5  1833     8 rsq     standard   0.944    10 0.00516 Preprocessor1_Model13</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Finalize workflow with best hyperparameters</span></span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>workflow <span class="ot">&lt;-</span> <span class="fu">finalize_workflow</span>(wf,  </span>
@@ -627,8 +627,8 @@ dbl (12): ID, sl_forb_current, sl_grass_current, sl_forb_mid_585, sl_grass_m...
 <pre><code># A tibble: 2 × 4
   .metric .estimator .estimate .config             
   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt;               
-1 rmse    standard       0.224 Preprocessor1_Model1
-2 rsq     standard       0.972 Preprocessor1_Model1</code></pre>
+1 rmse    standard       0.260 Preprocessor1_Model1
+2 rsq     standard       0.968 Preprocessor1_Model1</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot predicted vs observed values (test set)</span></span>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">collect_predictions</span>(final_fit) <span class="sc">|&gt;</span> </span>
