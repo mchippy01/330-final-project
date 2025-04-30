@@ -1,0 +1,292 @@
+---
+title: "ML-Chain"
+editor: visual
+---
+
+```{r}
+library(terra)      
+library(sf)          
+library(tidyverse)   
+library(tidymodels)  
+library(remotes)
+#for getting area of interest shapefiles (Mike's package from github)
+library(AOI)
+# for gridded data access (Mike's package from github )
+library(climateR)
+
+# Set the coordinate reference system (CRS) from an existing raster WHY NOT DO THIS WITH ALL 
+crs = crs(rast("data/sl_forb_current.tiff"))
+
+# Get the state boundary for Colorado and project it to the same CRS
+co = AOI::aoi_get(state = "CO") |> 
+  sf::st_transform(crs)
+
+# Load two raster layers (forb and grass) and crop them to Colorado
+r = terra::rast(c('data/sl_forb_current.tiff',
+                  'data/sl_grass_current.tiff')) |> 
+  terra::crop(co)
+# Load mid-century projections (future climate scenario) and crop them
+r2 = terra::rast(c('data/sl_forb_mid_585.tiff',
+                   'data/sl_grass_mid_585.tiff')) |> 
+  terra::crop(co)
+# Extract all current raster values
+v = values(r)
+
+# Identify non-NA rows
+idx <- which(!apply(is.na(v), 1, any))
+
+# Remove rows with NA values
+v   <- na.omit(v)
+
+# Scale the data (mean = 0, sd = 1)
+vs  <- scale(v)
+
+# this stransforms the data so that in every column mean=0 stddev= 1. This is important for k-menas because it creates equal weighting of varibles on diff scales, and fair distance computation; k-means use euclidean distance, which is sensitive to scale; scalinf ensures all var contribute equally to the clustering. This all avoids bias towards one var or another. 
+```
+
+```{r}
+# Perform k-means clustering (5 clusters, max 100 iterations)
+#k-mean= clustering algorithm used in unpupervised machine learning () to group data points into specified number of clusters, based on similarity.
+
+#smaller k's= simplier intepration, less overfitting, faster computation; but you may miss important sub-group differences 
+#larger k's= can revealsubtle patters or subtypes, and better to fit to data; meaning it may reduce within-cluster variance 
+# There are several ways to chose the best k-mean, I found a way called the elbow method : 
+# Elbow Method: Compute WCSS for k = 1 to 10
+
+#wcss <- numeric(10)
+
+#for (k in 1:10) {
+  #set.seed(42)  # For reproducibility
+  #km <- kmeans(vs, centers = k, iter.max = 100)
+  #wcss[k] <- km$tot.withinss
+#}
+
+# Plot the elbow curve
+#plot(1:10, wcss, type = "b", pch = 19,
+    # xlab = "Number of Clusters (k)",
+     #ylab = "Total Within-Cluster Sum of Squares (WCSS)",
+     #main = "Elbow Method for Determining Optimal k")
+
+#this shows you the "elbow" point, where increasing the k has diminishing returns
+```
+
+Maybe include (ask Mike)
+
+```{r}
+# 5 is defined by you - no right or wrong answer
+# This take a while to run so be sure to run, save, and comment in your code
+E <- kmeans(vs, 5, iter.max = 100)
+
+# Create a new raster for cluster results
+clus_raster <- r[[1]]
+values(clus_raster) <- NA
+clus_raster[idx] <- E$cluster
+#Purpose: turn the clustering results into spatial raster that matches the original data
+
+# Plot the cluster map
+plot(clus_raster, col = RColorBrewer::brewer.pal(5, "Spectral"))
+#visually inspect hwo the clusters are distributes; helps intepret how regions are simial by climate/ invasion projections 
+
+# Combine current, future, and cluster rasters into a single stack
+rs = c(r, r2, cl = clus_raster) |> 
+  setNames(c(names(r), names(r2), "cluster"))
+#this builds a multi-layer raster stack for future analysis. This step is key for linking cluster ID's to present and future landscape characteristics 
+
+
+# Define climate variables to retrieve
+# We are using the following variables:
+params = c('tmax', "soil", "srad", "ppt", "vpd", "pet")
+
+#tmax= max air temp: critical for determine phsyiological threasholf and growing season length
+#ppt= determines soil moisture and plant productivity. 
+#soil- soil mositure content; influences plant establishment and competition. Some invasive species can tolerate drought better (or explot mosit soil) better than some natives 
+#vpd=reflects atmospheric dryness; high vpd stresses plants, which can reduce native resistance and create openings for invasives
+#pet=potential evapostranspiration; helps asses water stress conditions, which invasices may exploit
+#srad= solar radiation; influences photsynthesis and growth which can cooralte with biomass and influence comp. dynamics 
+
+
+
+```
+
+This map shows:
+
+```{r}
+# Download TerraClim climate data for Colorado (2015–2020 average)
+gM = climateR::getTerraClim(co, params, 
+                            startDate = "2015-01-01", 
+                            endDate   = "2020-12-31") 
+
+
+# Load field plot data (data from 2007) and join with plot geometries
+pts <- inner_join(read_csv("data/CO_INVASIVE_SUBPLOT_SPP.csv"), 
+                  read_csv("data/CO_PLOTGEOM.csv"), 
+                  by = c("PLT_CN" = 'CN')) %>% 
+  st_as_sf(coords = c("LON", 'LAT'), crs = 4326) |> 
+  st_transform(crs)
+
+# Extract raster and climate data to points
+xx = bind_cols(
+  terra::extract(rs, pts),  
+  terra::extract(rast(map(gM, mean)), pts)[,-1]
+) |> 
+  drop_na()
+
+write_csv(xx, "data/xx.csv")
+#saves the cleaned, extracted data to a CSV file 
+
+
+```
+
+```{r}
+# -------------------
+# Start the modeling workflow
+# -------------------
+
+# Split data into training and testing sets, stratified by cluster
+xx = read_csv("data/xx.csv") 
+
+xx = replace(xx, xx == 0 , 1)
+#replace 0's with 1's; do this to avoid transformation/comp issues. In an eco sense, you do this to avoid flasley interpreting 0 as absence if the data is just very low. It also prevents modeling distorions 
+
+#set seed and do inital split 
+set.seed(123)
+s = initial_split(xx, strata = cluster)
+training = training(s)
+testing = testing(s)
+
+# Create 10-fold cross-validation splits
+folds = vfold_cv(training, v = 10)
+
+# Define various models
+lm_mod = linear_reg() |> 
+  set_engine("lm") |> 
+  set_mode("regression")
+
+b_mod = boost_tree() |> 
+  set_engine("xgboost") |> 
+  set_mode("regression")
+
+b_mod2 = boost_tree() |> 
+  set_engine("lightgbm") |> 
+  set_mode("regression")
+
+rf_mod = rand_forest() |> 
+  set_engine("ranger", importance = "impurity") |> 
+  set_mode("regression")
+
+nn_mod = mlp() |> 
+  set_engine("nnet") |> 
+  set_mode("regression")
+
+
+```
+
+```{r}
+
+library(bonsai)  # Needed for using lightgbm in tidymodels
+
+# Build a recipe to preprocess the data (drop unwanted columns)
+rec = recipe(sl_forb_mid_585 ~ ., data = training) |> 
+  step_rm(sl_grass_mid_585, ID) |> 
+  step_normalize(all_predictors())
+
+# Create a workflow set: recipe + all models
+wf = workflow_set(list(rec),
+                  list(lm_mod, 
+                       xgboost = b_mod, 
+                       lightgbm = b_mod2, 
+                       nn_mod, 
+                       rf_mod))  |> 
+  workflow_map(resamples = folds)
+
+# Visualize workflow performance
+autoplot(wf)
+
+# Collect model evaluation metrics
+collect_metrics(wf) |> 
+  filter(.metric == "rsq")
+
+
+```
+
+want to move forward with random forest model because it has the lowest root mean sqaured error and highest r-sqaured value.
+
+```{r}
+
+
+# Focus on random forest (rf_mod) for tuning
+
+
+# Build a single workflow with random forest model
+wf = workflow() |> 
+  add_recipe(rec) |> 
+  add_model(rf_mod) 
+
+# Fit the random forest to training data
+wf_f = wf |> 
+  fit(data = training) 
+
+# Visualize feature importance (tells you which feature/variable was most important in making predictions)
+vip::vip(wf_f)
+
+# Tune hyperparameters of random forest
+rf_t = rand_forest(trees = tune(), 
+                   mtry = tune(), 
+                   min_n = tune()) |> 
+  set_engine("ranger") |> 
+  set_mode("regression")
+#trees= the number of decison trees; more means better preformance (to a point) but slower traning. 
+#mtry= controls the number of predictor varibales randomly selected at each split. More= less randomness
+#min_n= controls the number of data points a node must have to be split further; high values= underfitting, low values= overfitting 
+
+# Perform grid search: find the best combo of hyperparameters 
+# This takes a while!
+tg = tune_grid(rf_t, 
+               preprocessor = rec,
+               resamples = folds, 
+               grid = 25)
+
+# Show best performing hyperparameter set based on metric of choice. I chose R2
+show_best(tg, metric = "rsq")
+
+# Finalize workflow with best hyperparameters
+workflow <- finalize_workflow(wf,  
+                              select_best(tg, metric = "rsq"))
+
+# Final fit on test set
+(final_fit <- last_fit(workflow, s))
+
+# Collect evaluation metrics on test set
+collect_metrics(final_fit)
+
+# Plot predicted vs observed values (test set)
+collect_predictions(final_fit) |> 
+  ggplot(aes(x = .pred, y = sl_forb_mid_585 )) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  geom_abline(slope = 1, intercept = 0) +
+  theme_bw() +
+  labs(x = "Predicted", y = "Observed") +
+  coord_equal()
+
+# -------------------
+# Predict on all data (for visualization)
+# -------------------
+
+# Fit model to all data
+mod = fit(workflow, xx)
+
+# Visualize predictions across clusters
+augment(mod, new_data = xx) |> 
+  ggplot(aes(x = .pred, y = sl_forb_mid_585, color = as.factor(cluster))) +
+  scale_color_brewer(palette = "Spectral") +
+  geom_point() +
+  geom_abline(slope = 1, intercept = 0) +
+  theme_bw() +
+  labs(x = "Predicted", y = "Observed") +
+  coord_equal()
+
+# Re-plot the cluster raster
+plot(clus_raster, col = RColorBrewer::brewer.pal(5, "Spectral"))
+
+```
