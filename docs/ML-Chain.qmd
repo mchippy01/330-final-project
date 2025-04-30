@@ -1,6 +1,18 @@
 ---
-title: "ML-Chain"
-editor: visual
+title: "Ess 330 Project Final report " 
+
+authors:
+  - name: Chippy Marx
+    affiliation: CSU
+    roles: writing
+    corresponding: true
+  - name: Chris Drew
+    affiliation: CSU
+    roles: writing
+
+bibliography: references.bib
+execute: 
+  echo: true
 ---
 
 ```{r}
