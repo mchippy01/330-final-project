@@ -1,5 +1,5 @@
 ---
-title: "Ess 330 Project Updates" 
+title: "Ess 330 Project Final report " 
 
 authors:
   - name: Chippy Marx
@@ -15,474 +15,290 @@ execute:
   echo: true
 ---
 
-# Methods
-
-**Data importing and initial cleaning**
-
-Before we could do any of our analysis, we had to import our projected spatial data, and extract the raster values from it. The historic invasive species data we had did not have latitude and longitude, which was important for  analysis, so we found a dataset that had these values and shared site identifier values. We did an inner-join on these two datasets, and then selected only the attributes we would need for analysis to make the dataset smaller, filtered to the year we were interested in (2007), and removed missing values.  We had to prepare the spatial point data with the extracted raster values by filtering and formatting the dataset so that it was clean. Then, we  transformed the coordinate system of our historic data in order to match that of the raster data , or our projected dataset. Next we extracted the raster values from our projected dataset for the sites we had in our historic data set. We then binded these extracted values with the points in our historic dataset to create a new dataset where each row had both spatial and raster-derived information.
-
 ```{r}
-library(tidyverse)
-library(tidymodels)
-library(terra)
-library(dplyr)
-library(sf)
-library(ranger)
-library(ggplot2)
-library(tidyr)
+library(terra)      
+library(sf)          
+library(tidyverse)   
+library(tidymodels)  
+library(remotes)
+#for getting area of interest shapefiles (Mike's package from github)
+library(AOI)
+# for gridded data access (Mike's package from github )
+library(climateR)
+
+# Set the coordinate reference system (CRS) from an existing raster WHY NOT DO THIS WITH ALL 
+crs = crs(rast("data/sl_forb_current.tiff"))
+
+# Get the state boundary for Colorado and project it to the same CRS
+co = AOI::aoi_get(state = "CO") |> 
+  sf::st_transform(crs)
+
+# Load two raster layers (forb and grass) and crop them to Colorado
+r = terra::rast(c('data/sl_forb_current.tiff',
+                  'data/sl_grass_current.tiff')) |> 
+  terra::crop(co)
+# Load mid-century projections (future climate scenario) and crop them
+r2 = terra::rast(c('data/sl_forb_mid_585.tiff',
+                   'data/sl_grass_mid_585.tiff')) |> 
+  terra::crop(co)
+# Extract all current raster values
+v = values(r)
+
+# Identify non-NA rows
+idx <- which(!apply(is.na(v), 1, any))
+
+# Remove rows with NA values
+v   <- na.omit(v)
+
+# Scale the data (mean = 0, sd = 1)
+vs  <- scale(v)
+
+# this stransforms the data so that in every column mean=0 stddev= 1. This is important for k-menas because it creates equal weighting of varibles on diff scales, and fair distance computation; k-means use euclidean distance, which is sensitive to scale; scalinf ensures all var contribute equally to the clustering. This all avoids bias towards one var or another. 
 ```
 
 ```{r}
-# bring in forb data 
-r <- rast(c(
-  "data/sl_forb_current.tiff",
-  "data/sl_forb_mid_585.tiff",
-  "data/sl_forb_late_585.tiff"
-))
+# Perform k-means clustering (5 clusters, max 100 iterations)
+#k-mean= clustering algorithm used in unpupervised machine learning () to group data points into specified number of clusters, based on similarity.
 
-#bring in grass data 
-g <- rast(c('data/sl_grass_current.tiff','data/sl_grass_late_585.tiff', 'data/sl_grass_mid_585.tiff' ))
+#smaller k's= simplier intepration, less overfitting, faster computation; but you may miss important sub-group differences 
+#larger k's= can revealsubtle patters or subtypes, and better to fit to data; meaning it may reduce within-cluster variance 
+# There are several ways to chose the best k-mean, I found a way called the elbow method : 
+# Elbow Method: Compute WCSS for k = 1 to 10
+
+#wcss <- numeric(10)
+
+#for (k in 1:10) {
+  #set.seed(42)  # For reproducibility
+  #km <- kmeans(vs, centers = k, iter.max = 100)
+  #wcss[k] <- km$tot.withinss
+#}
+
+# Plot the elbow curve
+#plot(1:10, wcss, type = "b", pch = 19,
+    # xlab = "Number of Clusters (k)",
+     #ylab = "Total Within-Cluster Sum of Squares (WCSS)",
+     #main = "Elbow Method for Determining Optimal k")
+
+#this shows you the "elbow" point, where increasing the k has diminishing returns
+```
+
+Maybe include (ask Mike)
+
+```{r}
+# 5 is defined by you - no right or wrong answer
+# This take a while to run so be sure to run, save, and comment in your code
+E <- kmeans(vs, 5, iter.max = 100)
+
+# Create a new raster for cluster results
+clus_raster <- r[[1]]
+values(clus_raster) <- NA
+clus_raster[idx] <- E$cluster
+#Purpose: turn the clustering results into spatial raster that matches the original data
+
+# Plot the cluster map
+plot(clus_raster, col = RColorBrewer::brewer.pal(5, "Spectral"))
+#visually inspect hwo the clusters are distributes; helps intepret how regions are simial by climate/ invasion projections 
+
+# Combine current, future, and cluster rasters into a single stack
+rs = c(r, r2, cl = clus_raster) |> 
+  setNames(c(names(r), names(r2), "cluster"))
+#this builds a multi-layer raster stack for future analysis. This step is key for linking cluster ID's to present and future landscape characteristics 
 
 
-# Load and join historic  data
-Invasive_data <- read_csv("data/CO_INVASIVE_SUBPLOT_SPP.csv")
-Location_data <- read_csv("data/CO_PLOTGEOM.csv")
+# Define climate variables to retrieve
+# We are using the following variables:
+params = c('tmax', "soil", "srad", "ppt", "vpd", "pet")
 
-Invasive_withLoc <- inner_join(Invasive_data, Location_data, by = c("PLT_CN" = "CN"))
+#tmax= max air temp: critical for determine phsyiological threasholf and growing season length
+#ppt= determines soil moisture and plant productivity. 
+#soil- soil mositure content; influences plant establishment and competition. Some invasive species can tolerate drought better (or explot mosit soil) better than some natives 
+#vpd=reflects atmospheric dryness; high vpd stresses plants, which can reduce native resistance and create openings for invasives
+#pet=potential evapostranspiration; helps asses water stress conditions, which invasices may exploit
+#srad= solar radiation; influences photsynthesis and growth which can cooralte with biomass and influence comp. dynamics 
 
-# Filter and clean historic data 
-TMP <- Invasive_withLoc %>%
-  select(PLT_CN, LAT, INVYR.x, LON, VEG_FLDSPCD, COVER_PCT) %>%
-  filter(INVYR.x == 2007) %>%
+
+
+```
+
+This map shows:
+
+```{r}
+# Download TerraClim climate data for Colorado (2015–2020 average)
+gM = climateR::getTerraClim(co, params, 
+                            startDate = "2015-01-01", 
+                            endDate   = "2020-12-31") 
+
+
+# Load field plot data (data from 2007) and join with plot geometries
+pts <- inner_join(read_csv("data/CO_INVASIVE_SUBPLOT_SPP.csv"), 
+                  read_csv("data/CO_PLOTGEOM.csv"), 
+                  by = c("PLT_CN" = 'CN')) %>% 
+  st_as_sf(coords = c("LON", 'LAT'), crs = 4326) |> 
+  st_transform(crs)
+
+# Extract raster and climate data to points
+xx = bind_cols(
+  terra::extract(rs, pts),  
+  terra::extract(rast(map(gM, mean)), pts)[,-1]
+) |> 
   drop_na()
 
-# Convert the historic data frame into a spatial object using longitude and latitude coordinates.
-# Retain original coordinate columns and set the CRS to WGS84 (EPSG:4326).
-pts = TMP %>% 
-  st_as_sf(coords = c("LON", 'LAT'), remove = FALSE, crs = 4326) %>% 
-  distinct()
-
-
-```
-
-**Test 1: Visualizations**
-
-For this visual test we selected 10 sites from the map, trying to spread out across the state. We then created faceted scatter plots for 10 randomly selected sites of invasive forb and grass cover by three time points: Current, Mid-century (2040–2060), and Late-century (2080–2100) for the SSP585 climate scenario. The plots allowed us to examine visually vegetation cover trends without predictive modeling.
-
-```{r}
-#sites we will select, project
-site_ids = c(12224885010690, 12221198010690, 12223803010690, 12206792010690, 12222071010690, 1223416010690,	12225851010690,	12232600010690, 12212814010690, 	12214073010690  ) 
-
-#filer spatial data to only include the 10 sites of interest, then reproject. 
-ex_pts = pts %>% 
-  filter(PLT_CN %in% site_ids) %>% 
-  st_transform(crs(r))
-
-#extract raster values and bind comlums 
-v <-  extract(r, ex_pts)
-ex_Pts_both = bind_cols(ex_pts, v)
-
-#do the same for grass data 
-ex_pts_g = pts %>% 
-  filter(PLT_CN %in% site_ids) %>% 
-  st_transform(crs(g))
-
-g <-  extract(g, ex_pts_g)
-ex_Pts_both_g = bind_cols(ex_pts_g, g)
-
-ex_pts = pts %>% 
-  filter(PLT_CN %in% site_ids) %>% 
-  #distinct() %>% 
-  st_transform(crs(r))
-
-v <-  extract(r, ex_pts)
-ex_Pts_both = bind_cols(ex_pts, v)
-
-#point of this is ... for forb 
-df_long <- ex_Pts_both %>%
-  select(ID, COVER_PCT, sl_forb_current, sl_forb_mid_585, sl_forb_late_585) %>%
-  pivot_longer(
-    cols = c(COVER_PCT, sl_forb_current, sl_forb_mid_585, sl_forb_late_585),
-    names_to = "variable",
-    values_to = "value"
-  )
-
-#for grass 
-df_long_g <- ex_Pts_both_g %>%
-  select(ID, COVER_PCT, sl_grass_current, sl_grass_mid_585, sl_grass_late_585) %>%
-  pivot_longer(
-    cols = c(COVER_PCT, sl_grass_current, sl_grass_mid_585, sl_grass_late_585),
-    names_to = "variable",
-    values_to = "value"
-  )
+write_csv(xx, "data/xx.csv")
+#saves the cleaned, extracted data to a CSV file 
 
 
 ```
 
 ```{r}
-# Filter to 10 unique IDs
-ten_ids_forb <- df_long %>% 
-  distinct(ID) %>%
-  slice_head(n = 10) %>%
-  pull(ID)
+# -------------------
+# Start the modeling workflow
+# -------------------
 
-df_subset_forb <- df_long %>%
-  filter(ID %in% ten_ids_forb)
+# Split data into training and testing sets, stratified by cluster
+xx = read_csv("data/xx.csv") 
 
-# Convert ID to factor to preserve facet order
-df_subset_forb$ID <- factor(df_subset_forb$ID)
+xx = replace(xx, xx == 0 , 1)
+#replace 0's with 1's; do this to avoid transformation/comp issues. In an eco sense, you do this to avoid flasley interpreting 0 as absence if the data is just very low. It also prevents modeling distorions 
 
-df_subset_forb <- df_subset_forb %>%
-  mutate(
-    variable = recode(variable,
-      "COVER_PCT" = "2007 (Observed)",
-      "sl_forb_current" = "Current (1981–2010)",
-      "sl_forb_mid_585" = "Mid-century (2041–2070)",
-      "sl_forb_late_585" = "Late-century (2071–2100)"
-    ),
-    scenario_label = case_when(
-      variable == "2007 (Observed)" ~ "2007",
-      variable == "Current (1981–2010)" ~ "Current",
-      variable == "Mid-century (2041–2070)" ~ "Mid-century",
-      variable == "Late-century (2071–2100)" ~ "Late-century",
-      TRUE ~ NA_character_  # catch unmatched cases
-    ),
-    scenario_label = factor(scenario_label, levels = c("2007", "Current", "Mid-century", "Late-century"))
-  ) %>%
-  filter(!is.na(scenario_label))  # drop rows with NA scenario_label
+#set seed and do inital split 
+set.seed(123)
+s = initial_split(xx, strata = cluster)
+training = training(s)
+testing = testing(s)
 
-# Plot
-ggplot(df_subset_forb, aes(x = scenario_label, y = value, group = ID)) +
-  geom_line(aes(color = variable), linewidth = 1) +
-  geom_point(size = 2) +
-  facet_wrap(~ ID, scales = "fixed", nrow = 2) +
-  labs(
-    x = "Scenario",
-    y = "Cover Percentage",
-    title = "Forb Cover Change by Site (10 Sample IDs)",
-    color = "Scenario Timeframe"
-  ) +
-  theme_minimal(base_size = 14) +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),
-    strip.text = element_text(size = 16, face = "bold"),
-    plot.title = element_text(hjust = 0.5)
-  )
+# Create 10-fold cross-validation splits
+folds = vfold_cv(training, v = 10)
 
-```
+# Define various models
+lm_mod = linear_reg() |> 
+  set_engine("lm") |> 
+  set_mode("regression")
 
-```{r}
-# Filter to 10 unique IDs
-ten_ids <- df_long_g %>% 
-  distinct(ID) %>%
-  slice_head(n = 10) %>%
-  pull(ID)
+b_mod = boost_tree() |> 
+  set_engine("xgboost") |> 
+  set_mode("regression")
 
-df_subset <- df_long_g %>%
-  filter(ID %in% ten_ids)
+b_mod2 = boost_tree() |> 
+  set_engine("lightgbm") |> 
+  set_mode("regression")
 
-# Convert ID to factor to control facet order and labels
-df_subset$ID <- factor(df_subset$ID)
+rf_mod = rand_forest() |> 
+  set_engine("ranger", importance = "impurity") |> 
+  set_mode("regression")
 
-df_subset_grass <- df_subset %>%
-  mutate(
-    # Detailed labels for the legend
-    variable = recode(variable,
-      "COVER_PCT" = "2007 (Observed)",
-      "sl_grass_current" = "Current (1981–2010)",
-      "sl_grass_mid_585" = "Mid-century (2041–2070)",
-      "sl_grass_late_585" = "Late-century (2071–2100)"
-    ),
-    # Simplified x-axis labels
-    scenario_label = case_when(
-      variable == "2007 (Observed)" ~ "2007",
-      variable == "Current (1981–2010)" ~ "Current",
-      variable == "Mid-century (2041–2070)" ~ "Mid-century",
-      variable == "Late-century (2071–2100)" ~ "Late-century",
-      TRUE ~ NA_character_
-    ),
-    # Ensure factor order on x-axis
-    scenario_label = factor(scenario_label, levels = c("2007", "Current", "Mid-century", "Late-century"))
-  ) %>%
-  filter(!is.na(scenario_label))  # remove any unmatched
-
-# Plot
-ggplot(df_subset_grass, aes(x = scenario_label, y = value, group = ID)) +
-  geom_line(aes(color = variable), linewidth = 1) +
-  geom_point(size = 2) +
-  facet_wrap(~ ID, scales = "fixed", nrow = 2) +
-  labs(
-    x = "Scenario",
-    y = "Cover Percentage",
-    title = "Grass Cover Change by Site (10 Sample IDs)",
-    color = "Scenario Timeframe"
-  ) +
-  theme_minimal(base_size = 14) +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),
-    strip.text = element_text(size = 16, face = "bold"),
-    plot.title = element_text(hjust = 0.5)
-  )
-
-```
-
-**Building the reference map**
-
-For these figures we wanted to create a reference map of where the 10 sites we chose were. To do this we laid our 10 sites (using their lat and long values) on a map of Colorado. Next, we added the labels of the sites to the data set. We had to transform the location values back to lat and lon as we had projected them in the coordinate system of our spatial data earlier. We then plotted this onto our map of Colorado.
-
-```{r}
-
-# Get US state boundaries from base R maps
-usa <- map_data("state")
-
-# Filter for Colorado
-colorado <- usa %>% filter(region == "colorado")
-
-# Step 1: Add labels BEFORE converting to lat/lon
-ex_pts$Label <- as.character(1:nrow(ex_pts))
-
-# Step 2: Transform to lat/lon and extract coordinates
-ex_pts_latlon <- st_transform(ex_pts, crs = 4326) %>% 
-  mutate(
-    lon = st_coordinates(.)[, 1],
-    lat = st_coordinates(.)[, 2]
-  ) %>%
-  st_drop_geometry()
-
-# Step 3: Group overlapping points and combine labels
-ex_pts_latlon_grouped <- ex_pts_latlon %>%
-  group_by(lon, lat) %>%
-  summarise(Label = paste0("Site ", paste(Label, collapse = " & ")), .groups = "drop")
-
-# Step 4: Plot
-ggplot() +
-  geom_polygon(data = colorado, aes(x = long, y = lat, group = group),
-               fill = "lightgreen", color = "grey") +
-  geom_point(data = ex_pts_latlon_grouped, aes(x = lon, y = lat), color = "darkgreen", size = 3) +
-  geom_text(data = ex_pts_latlon_grouped, aes(x = lon, y = lat, label = Label), 
-            nudge_y = 0.2, size = 5) +
-  coord_fixed(1.3) +
-  labs(title = "Monitoring Sites in Colorado", subtitle = "Sites labeled 1–10 (merged if overlapping)",
-       x = "Longitude", y = "Latitude") +
-  theme_minimal() +
-  theme(
-    plot.title = element_text(size = 16, face = "bold"),
-    axis.text = element_blank(),
-    axis.ticks = element_blank()
-  )
-
-```
-
-**Test 2: Machine Learning**
-
-The second test we are doing  is a machine learning model in order to train a model to predict the percent cover of invasive forbs in the projected late century (2080–2100) cover data  from our historic cover data, the projected “current” cover (1981-2010), and the projected mid-century cover (2040–2060).  While we are not done with this model, we have taken several steps so far. 
-
- When we cleaned this dataset and created our combined historic and projected datasets for the machine learning, to ensure useful group-level analysis, we grouped the data by the classification in the late century dataset, counted the number of observations in each group, and filtered the data to retain only groups with more than 2 observations. We did this because models do not like to predict values that only occur once in the dataset. After ungrouping the data, we prepared it for modeling by converting the cover percentages in both the historic and projected data to factor type, as we saw that classification engines in the models worked better. 
-
-Next, we set a seed, did the initial split on our data, and set resamples for modeling. We had to drop the geometry in our dataset, as the models we chose do not support spatial data. We then defined our recipe as described above. 
-
-We chose 3 candidate models: random forest (RF)(with a ranger engine), Xgboost (Xgb) (with a xgboost engine), and a multilayer perceptron (MLP)  (with a neural network engine) model. For all of these models, the mode was set at classification because our data, while numeric values, is categorical not continuous.  We chose the RF model because it handles missing data and outliers well. We chose the Xgb model because it is one of the best models in predictive taste, especially for structured data. We chose the MLP model because it can model complex, nonlinear patterns between predictors and outcomes, and it was suggested to us because of the nature of our data . For each model we defined a workflow.  Next, we defined our list of models for comparison, and set the comparison metrics as Kappa and Accuracy. Accuracy measures the proportion of correctly classified observations out of all observations, and Kappa is a  measure of agreement between the predicted and actual classifications, adjusted for chance agreement (the level of agreement between predicted and actual classifications that would be expected just by random guessing).
-
-We then got stuck with our analysis, as we need to do more data manipulation and model adjustments before we can run out models. The next steps include making a workflow set with all the models, fitting the workflows with cross-validation, and comparing the models based on our comparison metrics. Once we know which model performs best, we can pick a model, tune that model, find the best hyperparameters, and finalize the workflow, getting predictions. 
-
-We do not know if we have chosen appropriate methods for this analysis yet, as we cannot see any performance metrics until we work out the kinks in our dataset and machine learning methods. 
-
-```{r}
-ex_pts_Ml = pts %>% 
-  st_transform(crs(r))
-
-v2<-  extract(r, ex_pts_Ml)
-
-ex_Pts_ml_both <- bind_cols(ex_pts_Ml, v2) %>% 
-  group_by(sl_forb_late_585) %>% 
-  mutate(n = n()) %>% 
-  ungroup() %>% 
-  filter(n > 2) %>% 
-  mutate(
-    sl_forb_current = as.factor(sl_forb_current),
-    sl_forb_mid_585 = as.factor(sl_forb_mid_585),
-    sl_forb_late_585 = as.factor(sl_forb_late_585),  
-    COVER_PCT = as.factor(COVER_PCT)
-  ) 
-
-ex_Pts_ml_both$sl_forb_late_585 %>% table()
-
-```
-
-```{r}
-#set seed, split data
-set.seed(32)
-ex_pts_both_split <- initial_split(ex_Pts_ml_both, prop = 0.8, strata = sl_forb_late_585)
-ex_pts_train <- training(ex_pts_both_split)
-ex_pts_test  <- testing(ex_pts_both_split)
-
-#resamples 
-ex_both_cv <- vfold_cv(ex_pts_train, v=10)
-
-#more cleaning 
-ex_Pts_ml_df <- ex_Pts_ml_both %>%
-  st_drop_geometry()
-
-# Then define your recipe
-forb_recipe <- recipe(sl_forb_late_585 ~ sl_forb_mid_585 + sl_forb_current + COVER_PCT, data = ex_Pts_ml_df) %>%
-  step_naomit(all_predictors(), all_outcomes()) %>%
-  step_normalize(all_numeric_predictors())
-
-table(ex_Pts_ml_df$sl_forb_late_585)
-
-#prep and bake 
-prep(forb_recipe) %>% bake(new_data = NULL)
-```
-
-```{r}
-
-#define 3 candidate models and set workflows 
-
-rf_mod <- rand_forest(trees = 500, mtry = 2) %>%
-  set_engine("ranger") %>%
-  set_mode("classification")
-
-rf_wf <- workflow() %>%
-  add_model(rf_mod) %>%
-  add_recipe(forb_recipe)
-
-xgb_mod <- boost_tree(trees = 500, learn_rate = 0.1) %>%
-  set_engine("xgboost") %>%
-  set_mode("classification")
-
-xgb_wf <- workflow() %>%
-  add_model(xgb_mod) %>%
-  add_recipe(forb_recipe)
-
-nn_mod <- mlp()%>%
-  set_engine("nnet")%>%
-  set_mode("classification")
-
-nn_wf <- workflow() %>% 
-  add_model(nn_mod) %>% 
-  add_recipe(forb_recipe)
-
-```
-
-**Where we get stuck**
-
-```{r}
-#define list of models for comparison 
-#model_list <- list(
- # MLP= nn_mod,
-  #random_forest = rf_mod,
-  #xgboost = xgb_mod
-#)
-
-#define my metrics 
-#my_metrics <- metric_set
-
-#create workflow set with all models 
-#wf_set <- workflow_set(
- # preproc = list(forb = forb_recipe),
- # models = model_list
-#)
-#fit all worklows with cross-validation 
-#wf_results <- wf_set %>%
-  #workflow_map(resamples = ex_both_cv, metrics = my_metrics, verbose = TRUE)
-
-#next we would autoplot but this is where we got stuck after meeting with Mike and changing things around. 
-
-```
-
-```{r}
-#specify tunable parameters 
-#xgb_mod_tuned <- boost_tree(
-  #trees = tune(),
-  #learn_rate = tune(),
-  #tree_depth = tune()
-#) %>%
-  #set_engine("xgboost") %>%
-  #set_mode("classification")
-
-#create new workflow 
-#xgb_wf_tuned <- workflow() %>%
-  #add_model(xgb_mod_tuned) %>%
-  #add_recipe(forb_recipe)
-
-#define tunable grid
-#xgb_grid <- grid_regular(
-  #trees(range = c(100, 1000)),
-  #learn_rate(range = c(0.01, 0.3)),
-  #tree_depth(range = c(2, 10)),
-  #levels = 5
-#)
-#tune model with cross-validation
-#xgb_tuned_results <- tune_grid(
-  #xgb_wf_tuned,
-  #resamples = ex_both_cv,
-  #grid = xgb_grid,
-  #metrics = my_metrics,
-  #control = control_grid(save_pred = TRUE)
-#)
+nn_mod = mlp() |> 
+  set_engine("nnet") |> 
+  set_mode("regression")
 
 
 ```
 
 ```{r}
-#evaluate and select the best model 
-#best_xgb <- select_best(xgb_tuned_results, metric = "accuracy")
 
-#show_best(xgb_tuned_results)
+library(bonsai)  # Needed for using lightgbm in tidymodels
 
-#autoplot(xgb_tuned_results)
+# Build a recipe to preprocess the data (drop unwanted columns)
+rec = recipe(sl_forb_mid_585 ~ ., data = training) |> 
+  step_rm(sl_grass_mid_585, ID) |> 
+  step_normalize(all_predictors())
+
+# Create a workflow set: recipe + all models
+wf = workflow_set(list(rec),
+                  list(lm_mod, 
+                       xgboost = b_mod, 
+                       lightgbm = b_mod2, 
+                       nn_mod, 
+                       rf_mod))  |> 
+  workflow_map(resamples = folds)
+
+# Visualize workflow performance
+autoplot(wf)
+
+# Collect model evaluation metrics
+collect_metrics(wf) |> 
+  filter(.metric == "rsq")
 
 
 ```
+
+want to move forward with random forest model because it has the lowest root mean sqaured error and highest r-sqaured value.
 
 ```{r}
-#finalize workflow with the best hyperparameters 
-#final_xgb_wf <- finalize_workflow(xgb_wf_tuned, best_xgb)
 
-#final model veriication 
-#final_xgb_last <- last_fit(
-  #final_xgb_wf,
-  #split = ex_pts_both_split
-#)
-# Collect performance metrics
-#collect_metrics(final_xgb_last)
-#collect predictions 
-#final_xgb_preds <- collect_predictions(final_xgb_last)
+
+# Focus on random forest (rf_mod) for tuning
+
+
+# Build a single workflow with random forest model
+wf = workflow() |> 
+  add_recipe(rec) |> 
+  add_model(rf_mod) 
+
+# Fit the random forest to training data
+wf_f = wf |> 
+  fit(data = training) 
+
+# Visualize feature importance (tells you which feature/variable was most important in making predictions)
+vip::vip(wf_f)
+
+# Tune hyperparameters of random forest
+rf_t = rand_forest(trees = tune(), 
+                   mtry = tune(), 
+                   min_n = tune()) |> 
+  set_engine("ranger") |> 
+  set_mode("regression")
+#trees= the number of decison trees; more means better preformance (to a point) but slower traning. 
+#mtry= controls the number of predictor varibales randomly selected at each split. More= less randomness
+#min_n= controls the number of data points a node must have to be split further; high values= underfitting, low values= overfitting 
+
+# Perform grid search: find the best combo of hyperparameters 
+# This takes a while!
+tg = tune_grid(rf_t, 
+               preprocessor = rec,
+               resamples = folds, 
+               grid = 25)
+
+# Show best performing hyperparameter set based on metric of choice. I chose R2
+show_best(tg, metric = "rsq")
+
+# Finalize workflow with best hyperparameters
+workflow <- finalize_workflow(wf,  
+                              select_best(tg, metric = "rsq"))
+
+# Final fit on test set
+(final_fit <- last_fit(workflow, s))
+
+# Collect evaluation metrics on test set
+collect_metrics(final_fit)
+
+# Plot predicted vs observed values (test set)
+collect_predictions(final_fit) |> 
+  ggplot(aes(x = .pred, y = sl_forb_mid_585 )) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  geom_abline(slope = 1, intercept = 0) +
+  theme_bw() +
+  labs(x = "Predicted", y = "Observed") +
+  coord_equal()
+
+# -------------------
+# Predict on all data (for visualization)
+# -------------------
+
+# Fit model to all data
+mod = fit(workflow, xx)
+
+# Visualize predictions across clusters
+augment(mod, new_data = xx) |> 
+  ggplot(aes(x = .pred, y = sl_forb_mid_585, color = as.factor(cluster))) +
+  scale_color_brewer(palette = "Spectral") +
+  geom_point() +
+  geom_abline(slope = 1, intercept = 0) +
+  theme_bw() +
+  labs(x = "Predicted", y = "Observed") +
+  coord_equal()
+
+# Re-plot the cluster raster
+plot(clus_raster, col = RColorBrewer::brewer.pal(5, "Spectral"))
 
 ```
-
-```{r}
-#names(final_xgb_preds)
-```
-
-```{r}
-
-#ggplot(final_xgb_preds, aes(x = .pred, y = sl_forb_late_585)) +
-  #geom_point(alpha = 0.6, color = "steelblue") +
-  #geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "red") +
-  #labs(
-    #x = "Predicted",
-   # y = "Actual",
-  #  title = "Predicted vs. Actual - Final XGBoost Model"
- # ) +
- # theme_minimal()
-
-```
-
-# Results
-
-At this point, we only have results from our visual tests due to the complications with the machine learning models described above.
-
-The visualizations provide an initial look into how forb and grass cover may shift under the projected climate scenario (SSP585). Forb cover showed considerable variation across the 10 selected sites when comparing the “Current,” “Mid-century,” and “Late-century” projections. Some sites exhibited clear declines in forb cover over time, while others maintained relatively stable levels or showed modest increases.
-
-Grass cover showed a more consistent trend across sites. Most sites experienced a decline in grass cover across the three time periods. The one notable exception was the most westerly site, which displayed stability or a slight increase in grass cover under future climate projections.
-
-# Discussion
-
-Our initial visual observations suggest that both forb and grass cover can be significantly affected by projected late-century climate conditions. However, the response of these plant functional groups appears to vary by site and group.
-
-Forbs showed very variable patterns at sites. For example, some eastern slope sites had sharp forb declines, while others—those with unique microclimates or at higher elevations—had stable or even increasing forb cover. This diversity suggests that forb response to climate change potentially can be strongly site-specific, with localized environmental factors, species assemblages, or interactions not captured by large-scale climate variables being the decisive factors.
-
-In contrast, grass cover also decreased in a more uniform manner at most locations, particularly on the east-facing slope. Such homogeneity could be a sign of a broader sensitivity of grasses to the imposed changes in temperature and precipitation regimes. The only exception was the site farthest west, where grass cover was more stable or even slightly increasing, highlighting the importance of geographic and climatic context for controlling vegetation response.
-
-If model fitting proceeds, we aim to be able to compare model accuracy between algorithms (Random Forest, XGBoost, etc.) and interpret variable importance, ideally identifying the significant predictors of future vegetation change. This would allow us to better understand which climate-driven variables most propel changes in plant cover.
