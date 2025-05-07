@@ -13,15 +13,10 @@ format:
   html:
     comments:
       hypothesis: true
-  docx: default
-  jats: default
     code-fold: true
     code-summary: "Show code"
+  docx: default
+  jats: default
 
 execute:
- freeze: true
- 
- 
-
-
-
+  freeze: true

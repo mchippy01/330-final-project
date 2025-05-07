@@ -36,6 +36,7 @@ library(tidyr)
 ```
 
 ```{r}
+#| eval: false
 # bring in forb data 
 r <- rast(c(
   "data/sl_forb_current.tiff",
@@ -75,6 +76,7 @@ pts = TMP %>%
 For this visual test we selected 10 sites from the map, trying to spread out across the state. We then created faceted scatter plots for 10 randomly selected sites of invasive forb and grass cover by three time points: Current, Mid-century (2040–2060), and Late-century (2080–2100) for the SSP585 climate scenario. The plots allowed us to examine visually vegetation cover trends without predictive modeling.
 
 ```{r}
+
 #sites we will select, project
 site_ids = c(12224885010690, 12221198010690, 12223803010690, 12206792010690, 12222071010690, 1223416010690,	12225851010690,	12232600010690, 12212814010690, 	12214073010690  ) 
 
@@ -345,6 +347,7 @@ clus_raster[idx] <- E$cluster
 Next we created a new raster for the cluster results, and mapped that. Next we combined the current and future forb predictions and the cluster rasters into a single stack; this builds a multi-layer raster stack for future analysis. This step is key for linking cluster ID's to present and future landscape characteristics.
 
 ```{r}
+set.seed(123)
 
 plot(clus_raster, col = RColorBrewer::brewer.pal(5, "Spectral"))
 
