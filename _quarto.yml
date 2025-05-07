@@ -15,9 +15,8 @@ format:
       hypothesis: true
   docx: default
   jats: default
-
-  # (other formats)
-  # pdf: default
+    code-fold: true
+    code-summary: "Show code"
 
 execute:
  freeze: true
