@@ -82,11 +82,7 @@ vs  <- scale(v)
 #this shows you the "elbow" point, where increasing the k has diminishing returns
 ```
 
-
-
 Maybe include (ask Mike)
-
-
 
 ```{r}
 # 5 is defined by you - no right or wrong answer
@@ -124,11 +120,7 @@ params = c('tmax', "soil", "srad", "ppt", "vpd", "pet")
 
 ```
 
-
-
 This map shows:
-
-
 
 ```{r}
 # Download TerraClim climate data for Colorado (2015–2020 average)
@@ -229,11 +221,7 @@ collect_metrics(wf) |>
 
 ```
 
-
-
 want to move forward with random forest model because it has the lowest root mean sqaured error and highest r-sqaured value.
-
-
 
 ```{r}
 
@@ -327,11 +315,7 @@ augment(mod, new_data = xx) |>
 
 ```
 
-
-
 fviz_cluster
-
-
 
 ```{r}
 xx$cluster <- as.numeric(xx$cluster)
@@ -347,4 +331,3 @@ ggplot(aug, aes(x = .pred, y = sl_forb_mid_585, color = cluster)) +
   coord_equal()
 
 ```
-
