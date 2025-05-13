@@ -242,8 +242,11 @@
 <h1>Methods</h1>
 <p><strong>Data importing and initial cleaning</strong></p>
 <p>Before we could do any of our analysis, we had to import our projected spatial data, and extract the raster values from it. The historic invasive species data we had did not have latitude and longitude, which was important for&nbsp; analysis, so we found a dataset that had these values and shared site identifier values. We did an inner-join on these two datasets, and then selected only the attributes we would need for analysis to make the dataset smaller, filtered to the year we were interested in (2007), and removed missing values.&nbsp; We had to prepare the spatial point data with the extracted raster values by filtering and formatting the dataset so that it was clean. Then, we&nbsp; transformed the coordinate system of our historic data in order to match that of the raster data , or our projected dataset. Next we extracted the raster values from our projected dataset for the sites we had in our historic data set. We then binded these extracted values with the points in our historic dataset to create a new dataset where each row had both spatial and raster-derived information.</p>
-<div class="cell-container"><div class="cell-decorator"><pre>In [1]:</pre></div><div class="cell">
+<div class="cell-container code-fold"><div class="cell-decorator"><pre>In [1]:</pre></div><div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stderr">
 <pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
 ✔ dplyr     1.1.4     ✔ readr     2.1.5
@@ -256,29 +259,38 @@
 ✖ dplyr::lag()    masks stats::lag()
 ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
 </div>
+<details class="code-fold">
+<summary>Show code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stderr">
-<pre><code>── Attaching packages ────────────────────────────────────── tidymodels 1.2.0 ──
-✔ broom        1.0.7     ✔ rsample      1.2.1
-✔ dials        1.3.0     ✔ tune         1.2.1
-✔ infer        1.0.7     ✔ workflows    1.1.4
+<pre><code>── Attaching packages ────────────────────────────────────── tidymodels 1.3.0 ──
+✔ broom        1.0.8     ✔ rsample      1.3.0
+✔ dials        1.4.0     ✔ tune         1.3.0
+✔ infer        1.0.8     ✔ workflows    1.2.0
 ✔ modeldata    1.4.0     ✔ workflowsets 1.1.0
-✔ parsnip      1.2.1     ✔ yardstick    1.3.2
-✔ recipes      1.1.0     
+✔ parsnip      1.3.1     ✔ yardstick    1.3.2
+✔ recipes      1.3.0     
 ── Conflicts ───────────────────────────────────────── tidymodels_conflicts() ──
 ✖ scales::discard() masks purrr::discard()
 ✖ dplyr::filter()   masks stats::filter()
 ✖ recipes::fixed()  masks stringr::fixed()
 ✖ dplyr::lag()      masks stats::lag()
 ✖ yardstick::spec() masks readr::spec()
-✖ recipes::step()   masks stats::step()
-• Use tidymodels_prefer() to resolve common conflicts.</code></pre>
+✖ recipes::step()   masks stats::step()</code></pre>
 </div>
+<details class="code-fold">
+<summary>Show code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(terra)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stderr">
 <pre><code>terra 1.8.42
 
 Attaching package: 'terra'
+
+The following object is masked from 'package:dials':
+
+    buffer
 
 The following object is masked from 'package:scales':
 
@@ -288,16 +300,24 @@ The following object is masked from 'package:tidyr':
 
     extract</code></pre>
 </div>
+<details class="code-fold">
+<summary>Show code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stderr">
 <pre><code>Linking to GEOS 3.13.0, GDAL 3.8.5, PROJ 9.5.1; sf_use_s2() is TRUE</code></pre>
 </div>
+<details class="code-fold">
+<summary>Show code</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ranger)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [2]:</pre></div><div class="cell">
+<div class="cell-container code-fold"><div class="cell-decorator"><pre>In [2]:</pre></div><div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bring in forb data </span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="fu">c</span>(</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data/sl_forb_current.tiff"</span>,</span>
@@ -311,6 +331,7 @@ The following object is masked from 'package:tidyr':
 <span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Load and join historic  data</span></span>
 <span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>Invasive_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/CO_INVASIVE_SUBPLOT_SPP.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stderr">
 <pre><code>Rows: 3975 Columns: 17
 ── Column specification ────────────────────────────────────────────────────────
@@ -323,7 +344,10 @@ dttm  (1): CREATED_DATE
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 </div>
+<details class="code-fold">
+<summary>Show code</summary>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>Location_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/CO_PLOTGEOM.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stderr">
 <pre><code>Rows: 29168 Columns: 24
 ── Column specification ────────────────────────────────────────────────────────
@@ -336,6 +360,8 @@ dttm  (2): CREATED_DATE, MODIFIED_DATE
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 </div>
+<details class="code-fold">
+<summary>Show code</summary>
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>Invasive_withLoc <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(Invasive_data, Location_data, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"PLT_CN"</span> <span class="ot">=</span> <span class="st">"CN"</span>))</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter and clean historic data </span></span>
@@ -349,9 +375,13 @@ dttm  (2): CREATED_DATE, MODIFIED_DATE
 <span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>pts <span class="ot">=</span> TMP <span class="sc">%&gt;%</span> </span>
 <span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>(<span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"LON"</span>, <span class="st">'LAT'</span>), <span class="at">remove =</span> <span class="cn">FALSE</span>, <span class="at">crs =</span> <span class="dv">4326</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div></div>
 <p><strong>Test 1: Visualizations</strong></p>
-<div class="cell-container"><div class="cell-decorator"><pre>In [3]:</pre></div><div class="cell">
+<p>For this visual test we selected 10 sites from the map, trying to spread out across the state. We then created faceted scatter plots for 10 randomly selected sites of invasive forb and grass cover by three time points: Current, Mid-century (2040–2060), and Late-century (2080–2100) for the SSP585 climate scenario. The plots allowed us to examine visually vegetation cover trends without predictive modeling.</p>
+<div class="cell-container code-fold"><div class="cell-decorator"><pre>In [3]:</pre></div><div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#sites we will select, project</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>site_ids <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">12224885010690</span>, <span class="dv">12221198010690</span>, <span class="dv">12223803010690</span>, <span class="dv">12206792010690</span>, <span class="dv">12222071010690</span>, <span class="dv">1223416010690</span>, <span class="dv">12225851010690</span>, <span class="dv">12232600010690</span>, <span class="dv">12212814010690</span>,     <span class="dv">12214073010690</span>  ) </span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -361,7 +391,7 @@ dttm  (2): CREATED_DATE, MODIFIED_DATE
 <span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="fu">crs</span>(r))</span>
 <span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="co">#extract raster values and bind comlums </span></span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>v <span class="ot">&lt;-</span>  <span class="fu">extract</span>(r, ex_pts)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>v <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">extract</span>(r, ex_pts)</span>
 <span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>ex_Pts_both <span class="ot">=</span> <span class="fu">bind_cols</span>(ex_pts, v)</span>
 <span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="co">#do the same for grass data </span></span>
@@ -369,7 +399,7 @@ dttm  (2): CREATED_DATE, MODIFIED_DATE
 <span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(PLT_CN <span class="sc">%in%</span> site_ids) <span class="sc">%&gt;%</span> </span>
 <span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="fu">crs</span>(g))</span>
 <span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span>  <span class="fu">extract</span>(g, ex_pts_g)</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span>  terra<span class="sc">::</span><span class="fu">extract</span>(g, ex_pts_g)</span>
 <span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>ex_Pts_both_g <span class="ot">=</span> <span class="fu">bind_cols</span>(ex_pts_g, g)</span>
 <span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>ex_pts <span class="ot">=</span> pts <span class="sc">%&gt;%</span> </span>
@@ -377,7 +407,7 @@ dttm  (2): CREATED_DATE, MODIFIED_DATE
 <span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>  <span class="co">#distinct() %&gt;% </span></span>
 <span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="fu">crs</span>(r))</span>
 <span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>v <span class="ot">&lt;-</span>  <span class="fu">extract</span>(r, ex_pts)</span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>v <span class="ot">&lt;-</span>  terra<span class="sc">::</span><span class="fu">extract</span>(r, ex_pts)</span>
 <span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>ex_Pts_both <span class="ot">=</span> <span class="fu">bind_cols</span>(ex_pts, v)</span>
 <span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a><span class="co">#point of this is ... for forb </span></span>
@@ -397,8 +427,11 @@ dttm  (2): CREATED_DATE, MODIFIED_DATE
 <span id="cb15-43"><a href="#cb15-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"variable"</span>,</span>
 <span id="cb15-44"><a href="#cb15-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"value"</span></span>
 <span id="cb15-45"><a href="#cb15-45" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [4]:</pre></div><div class="cell">
+<div class="cell-container code-fold"><div class="cell-decorator"><pre>In [4]:</pre></div><div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter to 10 unique IDs</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>ten_ids_forb <span class="ot">&lt;-</span> df_long <span class="sc">%&gt;%</span> </span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(ID) <span class="sc">%&gt;%</span></span>
@@ -447,6 +480,7 @@ dttm  (2): CREATED_DATE, MODIFIED_DATE
 <span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
 <span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>)</span>
 <span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div class="">
 <figure class="figure">
@@ -455,7 +489,9 @@ dttm  (2): CREATED_DATE, MODIFIED_DATE
 </div>
 </div>
 </div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [5]:</pre></div><div class="cell">
+<div class="cell-container code-fold"><div class="cell-decorator"><pre>In [5]:</pre></div><div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter to 10 unique IDs</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>ten_ids <span class="ot">&lt;-</span> df_long_g <span class="sc">%&gt;%</span> </span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(ID) <span class="sc">%&gt;%</span></span>
@@ -507,6 +543,7 @@ dttm  (2): CREATED_DATE, MODIFIED_DATE
 <span id="cb17-49"><a href="#cb17-49" aria-hidden="true" tabindex="-1"></a>    <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
 <span id="cb17-50"><a href="#cb17-50" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>)</span>
 <span id="cb17-51"><a href="#cb17-51" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div class="">
 <figure class="figure">
@@ -517,7 +554,9 @@ dttm  (2): CREATED_DATE, MODIFIED_DATE
 </div></div>
 <p><strong>Building the reference map</strong></p>
 <p>For these figures we wanted to create a reference map of where the 10 sites we chose were. To do this we laid our 10 sites (using their lat and long values) on a map of Colorado. Next, we added the labels of the sites to the data set. We had to transform the location values back to lat and lon as we had projected them in the coordinate system of our spatial data earlier. We then plotted this onto our map of Colorado.</p>
-<div class="cell-container"><div class="cell-decorator"><pre>In [6]:</pre></div><div class="cell">
+<div class="cell-container code-fold"><div class="cell-decorator"><pre>In [6]:</pre></div><div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get US state boundaries from base R maps</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>usa <span class="ot">&lt;-</span> <span class="fu">map_data</span>(<span class="st">"state"</span>)</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -548,7 +587,7 @@ dttm  (2): CREATED_DATE, MODIFIED_DATE
 <span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">data =</span> ex_pts_latlon_grouped, <span class="fu">aes</span>(<span class="at">x =</span> lon, <span class="at">y =</span> lat, <span class="at">label =</span> Label), </span>
 <span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>            <span class="at">nudge_y =</span> <span class="fl">0.2</span>, <span class="at">size =</span> <span class="dv">5</span>) <span class="sc">+</span></span>
 <span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_fixed</span>(<span class="fl">1.3</span>) <span class="sc">+</span></span>
-<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Monitoring Sites in Colorado"</span>, <span class="at">subtitle =</span> <span class="st">"Sites labeled 1–10 (merged if overlapping)"</span>,</span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Sites of interest in Colorado"</span>,</span>
 <span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Longitude"</span>, <span class="at">y =</span> <span class="st">"Latitude"</span>) <span class="sc">+</span></span>
 <span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
 <span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
@@ -556,6 +595,7 @@ dttm  (2): CREATED_DATE, MODIFIED_DATE
 <span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text =</span> <span class="fu">element_blank</span>(),</span>
 <span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.ticks =</span> <span class="fu">element_blank</span>()</span>
 <span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div class="">
 <figure class="figure">
@@ -571,7 +611,9 @@ dttm  (2): CREATED_DATE, MODIFIED_DATE
 <p>We chose 3 candidate models: random forest (RF)(with a ranger engine), Xgboost (Xgb) (with a xgboost engine), and a multilayer perceptron (MLP)&nbsp; (with a neural network engine) model. For all of these models, the mode was set at classification because our data, while numeric values, is categorical not continuous.&nbsp; We chose the RF model because it handles missing data and outliers well. We chose the Xgb model because it is one of the best models in predictive taste, especially for structured data. We chose the MLP model because it can model complex, nonlinear patterns between predictors and outcomes, and it was suggested to us because of the nature of our data . For each model we defined a workflow.&nbsp; Next, we defined our list of models for comparison, and set the comparison metrics as Kappa and Accuracy. Accuracy measures the proportion of correctly classified observations out of all observations, and Kappa is a&nbsp; measure of agreement between the predicted and actual classifications, adjusted for chance agreement (the level of agreement between predicted and actual classifications that would be expected just by random guessing).</p>
 <p>We then got stuck with our analysis, as we need to do more data manipulation and model adjustments before we can run out models. The next steps include making a workflow set with all the models, fitting the workflows with cross-validation, and comparing the models based on our comparison metrics. Once we know which model performs best, we can pick a model, tune that model, find the best hyperparameters, and finalize the workflow, getting predictions.&nbsp;</p>
 <p>We do not know if we have chosen appropriate methods for this analysis yet, as we cannot see any performance metrics until we work out the kinks in our dataset and machine learning methods.&nbsp;</p>
-<div class="cell-container"><div class="cell-decorator"><pre>In [7]:</pre></div><div class="cell">
+<div class="cell-container code-fold"><div class="cell-decorator"><pre>In [7]:</pre></div><div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>ex_pts_Ml <span class="ot">=</span> pts <span class="sc">%&gt;%</span> </span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="fu">crs</span>(r))</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -590,13 +632,16 @@ dttm  (2): CREATED_DATE, MODIFIED_DATE
 <span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>  ) </span>
 <span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>ex_Pts_ml_both<span class="sc">$</span>sl_forb_late_585 <span class="sc">%&gt;%</span> <span class="fu">table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>.
  0  1  2  3  4 
 15 68 27 13  4 </code></pre>
 </div>
 </div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [8]:</pre></div><div class="cell">
+<div class="cell-container code-fold"><div class="cell-decorator"><pre>In [8]:</pre></div><div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co">#set seed, split data</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">32</span>)</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>ex_pts_both_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(ex_Pts_ml_both, <span class="at">prop =</span> <span class="fl">0.8</span>, <span class="at">strata =</span> sl_forb_late_585)</span>
@@ -616,13 +661,17 @@ dttm  (2): CREATED_DATE, MODIFIED_DATE
 <span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_normalize</span>(<span class="fu">all_numeric_predictors</span>())</span>
 <span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ex_Pts_ml_df<span class="sc">$</span>sl_forb_late_585)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
  0  1  2  3  4 
 15 68 27 13  4 </code></pre>
 </div>
+<details class="code-fold">
+<summary>Show code</summary>
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co">#prep and bake </span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">prep</span>(forb_recipe) <span class="sc">%&gt;%</span> <span class="fu">bake</span>(<span class="at">new_data =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 127 × 4
    sl_forb_mid_585 sl_forb_current COVER_PCT sl_forb_late_585
@@ -640,7 +689,9 @@ dttm  (2): CREATED_DATE, MODIFIED_DATE
 # ℹ 117 more rows</code></pre>
 </div>
 </div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [9]:</pre></div><div class="cell">
+<div class="cell-container code-fold"><div class="cell-decorator"><pre>In [9]:</pre></div><div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co">#define 3 candidate models and set workflows </span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>rf_mod <span class="ot">&lt;-</span> <span class="fu">rand_forest</span>(<span class="at">trees =</span> <span class="dv">500</span>, <span class="at">mtry =</span> <span class="dv">2</span>) <span class="sc">%&gt;%</span></span>
@@ -666,9 +717,12 @@ dttm  (2): CREATED_DATE, MODIFIED_DATE
 <span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>nn_wf <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">%&gt;%</span> </span>
 <span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(nn_mod) <span class="sc">%&gt;%</span> </span>
 <span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_recipe</span>(forb_recipe)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div></div>
 <p><strong>Where we get stuck</strong></p>
-<div class="cell-container"><div class="cell-decorator"><pre>In [10]:</pre></div><div class="cell">
+<div class="cell-container code-fold"><div class="cell-decorator"><pre>In [10]:</pre></div><div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co">#define list of models for comparison </span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="co">#model_list &lt;- list(</span></span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a> <span class="co"># MLP= nn_mod,</span></span>
@@ -689,8 +743,11 @@ dttm  (2): CREATED_DATE, MODIFIED_DATE
 <span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>  <span class="co">#workflow_map(resamples = ex_both_cv, metrics = my_metrics, verbose = TRUE)</span></span>
 <span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a><span class="co">#next we would autoplot but this is where we got stuck after meeting with Mike and changing things around. </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [11]:</pre></div><div class="cell">
+<div class="cell-container code-fold"><div class="cell-decorator"><pre>In [11]:</pre></div><div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co">#specify tunable parameters </span></span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co">#xgb_mod_tuned &lt;- boost_tree(</span></span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#trees = tune(),</span></span>
@@ -720,16 +777,22 @@ dttm  (2): CREATED_DATE, MODIFIED_DATE
 <span id="cb27-27"><a href="#cb27-27" aria-hidden="true" tabindex="-1"></a>  <span class="co">#metrics = my_metrics,</span></span>
 <span id="cb27-28"><a href="#cb27-28" aria-hidden="true" tabindex="-1"></a>  <span class="co">#control = control_grid(save_pred = TRUE)</span></span>
 <span id="cb27-29"><a href="#cb27-29" aria-hidden="true" tabindex="-1"></a><span class="co">#)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [12]:</pre></div><div class="cell">
+<div class="cell-container code-fold"><div class="cell-decorator"><pre>In [12]:</pre></div><div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co">#evaluate and select the best model </span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="co">#best_xgb &lt;- select_best(xgb_tuned_results, metric = "accuracy")</span></span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="co">#show_best(xgb_tuned_results)</span></span>
 <span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="co">#autoplot(xgb_tuned_results)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [13]:</pre></div><div class="cell">
+<div class="cell-container code-fold"><div class="cell-decorator"><pre>In [13]:</pre></div><div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co">#finalize workflow with the best hyperparameters </span></span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="co">#final_xgb_wf &lt;- finalize_workflow(xgb_wf_tuned, best_xgb)</span></span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -742,11 +805,17 @@ dttm  (2): CREATED_DATE, MODIFIED_DATE
 <span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="co">#collect_metrics(final_xgb_last)</span></span>
 <span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a><span class="co">#collect predictions </span></span>
 <span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a><span class="co">#final_xgb_preds &lt;- collect_predictions(final_xgb_last)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [14]:</pre></div><div class="cell">
+<div class="cell-container code-fold"><div class="cell-decorator"><pre>In [14]:</pre></div><div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co">#names(final_xgb_preds)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [15]:</pre></div><div class="cell">
+<div class="cell-container code-fold"><div class="cell-decorator"><pre>In [15]:</pre></div><div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co">#ggplot(final_xgb_preds, aes(x = .pred, y = sl_forb_late_585)) +</span></span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">#geom_point(alpha = 0.6, color = "steelblue") +</span></span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "red") +</span></span>
@@ -756,13 +825,21 @@ dttm  (2): CREATED_DATE, MODIFIED_DATE
 <span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">#  title = "Predicted vs. Actual - Final XGBoost Model"</span></span>
 <span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a> <span class="co"># ) +</span></span>
 <span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a> <span class="co"># theme_minimal()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div></div>
 </section>
 <section id="results" class="level1">
 <h1>Results</h1>
+<p>At this point, we only have results from our visual tests due to the complications with the machine learning models described above.</p>
+<p>The visualizations provide an initial look into how forb and grass cover may shift under the projected climate scenario (SSP585). Forb cover showed considerable variation across the 10 selected sites when comparing the “Current,” “Mid-century,” and “Late-century” projections. Some sites exhibited clear declines in forb cover over time, while others maintained relatively stable levels or showed modest increases.</p>
+<p>Grass cover showed a more consistent trend across sites. Most sites experienced a decline in grass cover across the three time periods. The one notable exception was the most westerly site, which displayed stability or a slight increase in grass cover under future climate projections.</p>
 </section>
 <section id="discussion" class="level1">
 <h1>Discussion</h1>
+<p>Our initial visual observations suggest that both forb and grass cover can be significantly affected by projected late-century climate conditions. However, the response of these plant functional groups appears to vary by site and group.</p>
+<p>Forbs showed very variable patterns at sites. For example, some eastern slope sites had sharp forb declines, while others—those with unique microclimates or at higher elevations—had stable or even increasing forb cover. This diversity suggests that forb response to climate change potentially can be strongly site-specific, with localized environmental factors, species assemblages, or interactions not captured by large-scale climate variables being the decisive factors.</p>
+<p>In contrast, grass cover also decreased in a more uniform manner at most locations, particularly on the east-facing slope. Such homogeneity could be a sign of a broader sensitivity of grasses to the imposed changes in temperature and precipitation regimes. The only exception was the site farthest west, where grass cover was more stable or even slightly increasing, highlighting the importance of geographic and climatic context for controlling vegetation response.</p>
+<p>If model fitting proceeds, we aim to be able to compare model accuracy between algorithms (Random Forest, XGBoost, etc.) and interpret variable importance, ideally identifying the significant predictors of future vegetation change. This would allow us to better understand which climate-driven variables most propel changes in plant cover.</p>
 </section>
      </main>
 <!-- /main column -->  <script id="quarto-html-after-body" type="application/javascript">
