@@ -14,15 +14,93 @@ execute:
   echo: true
 ---
 
-# Abstract 
+# *Burned and Overrun: Forecasting Colorado’s Invasive Future*
+
+*Invasive plants and wildfires are becoming a growing concern across Colorado, especially as the climate continues to get hotter and drier. In this project, we set out to understand how invasive forbs and grasses might spread in the future—and where they’re most likely to take hold. Using historic field data from the U.S. Forest Service and climate projections under the SSP5-8.5 “worst-case” emissions scenario, we built machine learning models to map areas at highest risk. We combined spatial data, climate variables (like temperature and precipitation), and random forest modeling to predict invasion patterns through mid-century. What we found was that some regions—particularly the Western Slope and the San Juans—are more vulnerable than others, especially in places that already show signs of invasion today. Our results suggest that early warning signs are already visible, and by using tools like predictive modeling, we can better plan where to focus restoration and fire prevention efforts moving forward.*
 
 # Introduction 
 
-# Methods 
+Invasive plants and wildfires are becoming bigger problems in Colorado. As the climate gets hotter and drier, wildfires are happening more often and in many places, invasive grasses and forbs are moving in right behind them. These plants make it harder for native species to bounce back, and in some cases, they actually make future fires worse by adding more fuel to the landscape @prevey2024non.
+
+Some invasive species are especially good at surviving in stressful conditions, like heat and drought, which gives them an advantage in the changing climate @byun2018management . This creates a dangerous cycle: fire clears the way for invasives, and invasives make future fires more intense. It’s a pattern that’s been seen across the West, but it looks different depending on the region and the type of plants involved.
+
+For our project, we focused on Colorado. We used future projections from Prevey et al. that estimate how much invasive grass and forb cover might increase under a worst-case climate scenario (SSP5-8.5) @prevey2024non. These projections are based on data from burned sites across the western U.S. and include climate, soil, and topography as predictors @prevey2024non. We also pulled in real field data from the U.S. Forest Service (2006–2007) to ground our models in what’s already happening on the ground.
+
+In Colorado, the data shows a lot less variation than in other places like the Sierras or Pacific Northwest. That makes it harder to build strong models just from invasion values. So we added a new step: K-means clustering, using climate and invasion variables to group similar environments. This gave us a better sense of where invasives might thrive in the future especially in places that are already showing signs of stress today.
+
+We compared a total of 10 sites in Colorado spread out geographically. We then visualized the trend of invasive grasses and forbs over time at these 10 sites. We also  applied machine learning models—especially random forest—to predict future invasions under mid-century climate scenarios and highlight areas most vulnerable to future fire-invasion interactions across Colorado.
+
+### Background & Importance 
+
+Invasive plant species are an emerging threat in Colorado. They disrupt ecosystems, reduce biodiversity, and weaken the ability of landscapes to recover from stress. Some invasives even change how often and how severely fires occur, creating feedback loops that lead to more frequent wildfires @prevey2024non. 
+
+Healthy native plant communities are usually more resistant to invasion. But when ecosystems are already stressed—by drought, disturbance, or heat—non-native species have an easier time spreading @byun2018management. As Colorado gets hotter and drier, these conditions are expected to give invasive grasses and forbs a competitive edge, especially in areas recovering from fire @byun2018management. 
+
+We focused our project on a “worst-case” climate scenario (SSP5-8.5)—a high-emissions pathway that reflects what might happen if countries fail to meet climate goals. With major global players like the U.S. stepping back from emission targets, it's important to understand the ecological risks of staying on our current path. Our goal was to show what invasive spread might look like if climate change continues unchecked. 
+
+### Hypothesis
+
+**Visual Trend Hypothesis** 
+
+We expect the greatest increases in invasive grass and forb cover to occur in northwestern Colorado, where the climate is expected to become significantly hotter and drier. These conditions are likely to favor drought-tolerant invasives over native plants. 
+
+**Machine Learning Hypothesis** 
+
+We expect maximum temperature and precipitation to be the most important predictors in our machine learning models. As climate stress increases, native species may decline, creating opportunities for invasives that are more adapted to heat, drought, and disturbance 
+
+# Methods
+
+**The Data we are using**
+
+We used four datasets in our project. The first was the projection data from Prevey et al. Wenalso used climateR, developed by Mike Johnson  to retrieve 2015–2020 average climate variables for Colorado, including precipitation (ppt), maximum temperature (tmax), soil moisture, solar radiation (srad), vapor pressure deficit (vpd), and potential evapotranspiration (pet) @climateR2024. The AOI package (also developed by Mike) stands for Area of Interest @AOI2024. It helps users easily define and retrieve spatial boundaries (like states, counties, or custom polygons) as spatial features, which can then be used for cropping rasters or extracting climate data. We used AOI to obtain and transform the boundary for Colorado to match the projection of your raster dataset he getTerraClim() function from the climateR package lets users download high-resolution climate data from the TerraClim dataset @AOI2024. It allows you to choose a location, specific climate variables, and a time range. The usage is the same as what is in the ClimateR because TerraClim is a function from that package @AOI2024.
+
+In our analysis using the climateR package we chose 6 predictor variables. We chose maximum temperature (tmax), Precipitation (ppt), soil moisture content (soil), vapor pressure deficit (vpd), potential evapotranspiration (pet), and solar radiation (srad).  We chose tmax because it is critical for determining physiological threshold and growing season length @hatfield2015temperature . We chose precipitation because it determines soil moisture and plant productivity @jiang2022precipitation . Soil moisture content was chosen because it influences plant establishment and competition; some invasive species can tolerate drought better or exploit moist soil more effectively than some natives @zhang2020increased . Potential evapotranspiration was chosen because it helps assess water stress conditions, and invasives have been known to exploit these conditions @lu2019various. SRAD was chosen because it influences photosynthesis and growth, correlating with biomass and affecting competition dynamics @zhang2021diffuse. Vapor pressure deficit was chosen because it reflects atmospheric dryness; high VPD stresses plants, reducing native resistance and creating openings for invasives @grossiord2020plant .
+
+The main limitation in our study was that the projected data that we had showed very little variation in Colorado, as you can see in figure 1 @prevey2024non . This led us to adding climatic data ( from @climateR2024) to create k-means in order to provide our model more variation to predict off of. The reason we used k-means is that models are better at predicting means then a true model when variance in the data is low. 
+
+```{r}
+library(tidyverse)
+library(terra)
+library(dplyr)
+library(sf)
+
+
+r = rast("/Users/chippymarx/Downloads/sl_forb_current.tiff") 
+#use extract for long and lat 
+
+Invasive_data <- read_csv("data/CO_INVASIVE_SUBPLOT_SPP.csv")
+Location_data <- read_csv("data/CO_PLOTGEOM.csv")
+Invasive_withLoc <- inner_join(Invasive_data, Location_data, by = c("PLT_CN" = 'CN'))
+colnames(Invasive_withLoc)
+TMP <- Invasive_withLoc %>%
+  select(PLT_CN, LAT, INVYR.x, LON, VEG_FLDSPCD, COVER_PCT) %>%
+  filter(INVYR.x == 2007) %>%                
+  drop_na()  
+pts = TMP %>% 
+  st_as_sf(coords = c("LON", 'LAT'), remove = FALSE, crs = 4326) %>% 
+  distinct()
+
+pts$sl_forb_current = extract(r, pts)
+
+bb = st_bbox(pts) %>% 
+  sf::st_as_sfc() %>% 
+  st_as_sf() %>% 
+  st_transform(crs(r))
+
+cc = crop(r, bb)
+
+
+plot(cc)
+mtext("Figure 1: Projected raster values for current invasive forb coverage cropped to Colorado", 
+      side = 1,       # Bottom of plot
+      line = 4,       # Lines below the axis (adjust as needed)
+      cex = 0.8)  
+
+```
 
 **Data importing and initial cleaning**
 
-Before we could do any of our analysis, we had to import our projected spatial data, and extract the raster values from it. The historic invasive species data we had did not have latitude and longitude, which was important for  analysis, so we found a dataset that had these values and shared site identifier values. We did an inner-join on these two datasets, and then selected only the attributes we would need for analysis to make the dataset smaller, filtered to the year we were interested in (2007), and removed missing values.  We had to prepare the spatial point data with the extracted raster values by filtering and formatting the dataset so that it was clean. Then, we  transformed the coordinate system of our historic data in order to match that of the raster data , or our projected dataset. Next we extracted the raster values from our projected dataset for the sites we had in our historic data set. We then binded these extracted values with the points in our historic dataset to create a new dataset where each row had both spatial and raster-derived information.
+Before we could do any of our analysis, we had to import our projected spatial data, and extract the raster values from it. The historic invasive species data we had did not have latitude and longitude, which was important for analysis, so we found a dataset that had these values and shared site identifier values. We did an inner-join on these two datasets, and then selected only the attributes we would need for analysis to make the dataset smaller, filtered to the year we were interested in (2007), and removed missing values.  We had to prepare the spatial point data with the extracted raster values by filtering and formatting the dataset so that it was clean. Then, we  transformed the coordinate system of our historic data in order to match that of the raster data , or our projected dataset. Next we extracted the raster values from our projected dataset for the sites we had in our historic data set. We then binded these extracted values with the points in our historic dataset to create a new dataset where each row had both spatial and raster-derived information.
 
 ```{r}
 library(tidyverse)
@@ -36,7 +114,7 @@ library(tidyr)
 ```
 
 ```{r}
-#| eval: false
+
 # bring in forb data 
 r <- rast(c(
   "data/sl_forb_current.tiff",
@@ -89,13 +167,16 @@ ex_pts = pts %>%
 v <- terra::extract(r, ex_pts)
 ex_Pts_both = bind_cols(ex_pts, v)
 
-#do the same for grass data 
 ex_pts_g = pts %>% 
   filter(PLT_CN %in% site_ids) %>% 
   st_transform(crs(g))
 
 g <-  terra::extract(g, ex_pts_g)
 ex_Pts_both_g = bind_cols(ex_pts_g, g)
+#do the same for grass data 
+
+
+
 
 ex_pts = pts %>% 
   filter(PLT_CN %in% site_ids) %>% 
@@ -122,6 +203,7 @@ df_long_g <- ex_Pts_both_g %>%
     names_to = "variable",
     values_to = "value"
   )
+
 
 
 ```
@@ -169,7 +251,8 @@ Forb_vis <- ggplot(df_subset_forb, aes(x = scenario_label, y = value, group = ID
     x = "Scenario",
     y = "Cover Percentage",
     title = "Forb Cover Change by Site (10 Sample IDs)",
-    color = "Scenario Timeframe"
+    color = "Scenario Timeframe",
+    caption = "Figure 2. Invasive Forb Coverage over time at our 10 Sites of interest"
   ) +
   theme_minimal(base_size = 14) +
   theme(
@@ -177,7 +260,7 @@ Forb_vis <- ggplot(df_subset_forb, aes(x = scenario_label, y = value, group = ID
     strip.text = element_text(size = 16, face = "bold"),
     plot.title = element_text(hjust = 0.5)
   )
-
+print(Forb_vis)
 ```
 
 *Plot Grasses*
@@ -226,7 +309,8 @@ ggplot(df_subset_grass, aes(x = scenario_label, y = value, group = ID)) +
     x = "Scenario",
     y = "Cover Percentage",
     title = "Grass Cover Change by Site (10 Sample IDs)",
-    color = "Scenario Timeframe"
+    color = "Scenario Timeframe",
+    caption = "Figure 3. Invasive grass coverage over time at our 10 Sites of interest"
   ) +
   theme_minimal(base_size = 14) +
   theme(
@@ -273,7 +357,8 @@ ggplot() +
             nudge_y = 0.2, size = 5) +
   coord_fixed(1.3) +
   labs(title = "Sites of interest in Colorado",
-       x = "Longitude", y = "Latitude") +
+       x = "Longitude", y = "Latitude",
+       caption = "Figure 4. Reference map of 10 sites of interest ") +
   theme_minimal() +
   theme(
     plot.title = element_text(size = 16, face = "bold"),
@@ -283,9 +368,9 @@ ggplot() +
 
 ```
 
-### Test 2: Unsupervised machine learning model using k-means. 
+### Test 2: Unsupervised machine learning model using k-means.
 
-First we got the state boundary for Colorado from the AOI package and projected it to the same coordinate reference system. We cropped all of the raster data to Colorado, then extracted all the raster values, removing all rows with missing data. 
+First we got the state boundary for Colorado from the AOI package @AOI2024 and projected it to the same coordinate reference system. We cropped all of the raster data to Colorado, then extracted all the raster values, removing all rows with missing data. 
 
 Then we scaled the data with mean=1 and standard deviation=0 . This is important for K-means because it creates equal weighting of variables on different scales, and fair distance computation.  K-means uses euclidean distance, which is sensitive to scale, so scaling ensures all variables contribute equally to the clustering.
 
@@ -299,8 +384,6 @@ library(remotes)
 library(AOI)
 
 library(climateR)
-
-
 
 
 # Set the coordinate reference system (CRS) from an existing raster
@@ -350,6 +433,8 @@ Next we created a new raster for the cluster results, and mapped that. Next we c
 set.seed(123)
 
 plot(clus_raster, col = RColorBrewer::brewer.pal(5, "Spectral"))
+mtext("Figure 5: Clustered raster values for invasive forb coverage mid century", 
+      side = 1, line = 4, cex = 0.8)
 
 # Combine current, future, and cluster rasters into a single stack
 rs = c(r, r2, cl = clus_raster) |> 
@@ -357,14 +442,14 @@ rs = c(r, r2, cl = clus_raster) |>
 
 ```
 
-Next we defined the climate variables we would use in creating our rasters. We chose maximum temperature (tmax), Precipitation (ppt), soil moisture content (soil), vapor pressure deficit (vpd), potential evapotranspiration (pet), and solar radiation (srad).  We chose tmax because it is critical for determining physiological threshold and growing season length (Hatfield & Prueger). We chose precipitation because it determines soil moisture and plant productivity (yiang). Soil moisture content was chosen because it influences plant establishment and competition; some invasive species can tolerate drought better or exploit moist soil more effectively than some natives (Zhang 2020). Potential evapotranspiration was chosen because it helps assess watr stress conditions, and invasices have been known to exploit these conditions (Lu). SRAD was chosen because it influences photosynthesis and growth, correlating with biomass and affecting competition dynamics (Zhang 2021). Vapor pressure deficit was chosen because it reflects atmospheric dryness; high VPD stresses plants, reducing native resistance and creating openings for invasives (Grossiord et. al 2020)
+Next we defined the climate variables we would use in creating our rasters.
 
 ```{r}
 params = c('tmax', "soil", "srad", "ppt", "vpd", "pet")
 
 ```
 
-Next, using the TerraCLim package, setting the dates between 2015 and 2020, we binded that data to the raster data, extracting gM and mean. We split that bound data into training and testing sets, set a seed, and created  10-fold cross-validation splits. We then defined our 6 models, defined our recipe, normalizing all predictors and removing unwanted columns. We then tested each model with the metrics of root mean squared error (RMSE) and R2.
+Next, using the TerraCLim package (from @climateR2024) , setting the dates between 2015 and 2020, we binded that data to the raster data, extracting gM and mean. We split that bound data into training and testing sets, set a seed, and created  10-fold cross-validation splits. We then defined our 6 models, defined our recipe, normalizing all predictors and removing unwanted columns. We then tested each model with the metrics of root mean squared error (RMSE) and R2.
 
 ```{r}
 # Download TerraClim climate data for Colorado (2015–2020 average)
@@ -393,7 +478,7 @@ write_csv(xx, "data/xx.csv")
 xx = read_csv("data/xx.csv") 
 
 xx = replace(xx, xx == 0 , 1)
-#replace 0's with 1's; do this to avoid transformation/comp issues. In an eco sense, you do this to avoid flasley interpreting 0 as absence if the data is just very low. It also prevents modeling distorions 
+
 
 #set seed and do inital split 
 set.seed(123)
@@ -425,9 +510,9 @@ nn_mod = mlp() |>
   set_engine("nnet") |> 
   set_mode("regression")
 
-library(bonsai)  # Needed for using lightgbm in tidymodels
+library(bonsai)  
 
-# Build a recipe to preprocess the data (drop unwanted columns)
+# Build a recipe to preprocess the data 
 rec = recipe(sl_forb_mid_585 ~ ., data = training) |> 
   step_rm(sl_grass_mid_585, ID) |> 
   step_normalize(all_predictors())
@@ -442,7 +527,8 @@ wf = workflow_set(list(rec),
   workflow_map(resamples = folds)
 
 # Visualize workflow performance
-autoplot(wf)
+autoplot(wf) + 
+  labs(caption = "Figure 6: Canidate models' preformence visualized for comparison" )
 
 # Collect model evaluation metrics
 collect_metrics(wf) |> 
@@ -452,7 +538,7 @@ collect_metrics(wf) |>
 
 ```
 
-Our results showed that the random forest model performed the best with a RMSE of 0.259 and a R2 value of 0.954.  We fit the random forest model to the training data, and tuned the hyperparameters of mtry, trees, and min_n. Mtry was tuned because it controls the number of predictor variables selected at each split; high mtry reduces the randomness of the model. We tuned trees as it controls the number of decision trees; more trees means better performance to a point, but slower training. We tuned min_n which controls the number of data points a node must have to be split further; higher values create underfitting, and lower creates overfitting.
+Our results showed that the random forest model performed the best with a RMSE of 0.259 and a R2 value of 0.954 (figure 6).  We fit the random forest model to the training data, and tuned the hyperparameters of mtry, trees, and min_n. Mtry was tuned because it controls the number of predictor variables selected at each split; high mtry reduces the randomness of the model. We tuned trees as it controls the number of decision trees; more trees means better performance to a point, but slower training. We tuned min_n which controls the number of data points a node must have to be split further; higher values create underfitting, and lower creates overfitting.
 
 ```{r}
 # Build a single workflow with random forest model
@@ -464,8 +550,10 @@ wf = workflow() |>
 wf_f = wf |> 
   fit(data = training) 
 
-# Visualize feature importance (tells you which feature/variable was most important in making predictions)
-vip::vip(wf_f)
+# Visualize feature importance 
+vip::vip(wf_f) +
+  labs(caption = "Figure 7: Variable importance for final model") +
+  theme(plot.caption = element_text(hjust = 0.5, size = 10))
 
 # Tune hyperparameters of random forest
 rf_t = rand_forest(trees = tune(), 
@@ -473,16 +561,10 @@ rf_t = rand_forest(trees = tune(),
                    min_n = tune()) |> 
   set_engine("ranger") |> 
   set_mode("regression")
-#trees= the number of decison trees; more means better preformance (to a point) but slower traning. 
-#mtry= controls the number of predictor varibales randomly selected at each split. More= less randomness
-#min_n= controls the number of data points a node must have to be split further; high values= underfitting, low values= overfitting 
-
-# Perform grid search: find the best combo of hyperparameters 
-# This takes a while!
 
 ```
 
-We then performed a grid search to find the best combination of hyperparameters,and then finalized the workflow with the best hyperparameter. Next we did a final fit on the test set, collecting the rsq metric. Finally we predicted on all of our data, and visualted the predictions across clusters. Lastly, we re-plottes the cluster data for ease of analysis .
+We then performed a grid search to find the best combination of hyperparameters,and then finalized the workflow with the best hyperparameter. Next we did a final fit on the test set, collecting the rsq metric. We then visualized the importance of the vvaribles in our model for predicting mid century invasive forb coverage (figure 7). Finally we predicted on all of our data, and visualted the predictions across clusters.
 
 ```{r}
 tg = tune_grid(rf_t, 
@@ -510,12 +592,10 @@ collect_predictions(final_fit) |>
   geom_smooth(method = "lm", se = FALSE, color = "red") +
   geom_abline(slope = 1, intercept = 0) +
   theme_bw() +
-  labs(x = "Predicted", y = "Observed") +
+  labs(x = "Predicted", y = "Observed",
+       caption = "Figure 8. Observed vs. Predicted values ") +
   coord_equal()
 
-# -------------------
-# Predict on all data (for visualization)
-# -------------------
 
 # Fit model to all data
 mod = fit(workflow, xx)
@@ -527,67 +607,62 @@ augment(mod, new_data = xx) |>
   geom_point() +
   geom_abline(slope = 1, intercept = 0) +
   theme_bw() +
-  labs(x = "Predicted", y = "Observed") +
+  labs(x = "Predicted", y = "Observed",
+       caption = "Figure 9. Obeserved vs. Predicted values by clusters ") +
   coord_equal()
 
-# Re-plot the cluster raster
-plot(clus_raster, col = RColorBrewer::brewer.pal(5, "Spectral"))
 
-augment(mod, new_data = xx) |> 
-  ggplot(aes(x = .pred, y = sl_forb_mid_585, color = as.factor(cluster))) +
-  scale_color_brewer(palette = "Spectral", name = "cluster") +
-  geom_point() +
-  geom_abline(slope = 1, intercept = 0) +
-  theme_bw() +
-  labs(x = "Predicted", y = "Observed") +
-  coord_equal()
 
 ```
 
 # Results
 
-### Visual test 
+### Visual test
 
-The visualizations provide an initial look into how forb and grass cover may shift under the projected climate scenario (SSP585). Forb cover showed considerable variation across the 10 selected sites when comparing the “Current,” “Mid-century,” and “Late-century” projections. Some sites exhibited clear declines in forb cover over time, while others maintained relatively stable levels or showed modest increases.
+The visualizations provide an initial look into how forb and grass cover may shift under the projected climate scenario (SSP585). Forb cover showed considerable variation across the 10 selected sites when comparing the “Current,” “Mid-century,” and “Late-century” projections. Some sites exhibited clear declines in forb cover over time, while others maintained relatively stable levels or showed modest increases (figure 2).
 
-Grass cover showed a more consistent trend across sites. Most sites experienced a decline in grass cover across the three time periods. The one notable exception was the most westerly site, which displayed stability or a slight increase in grass cover under future climate projections.
+Grass cover showed a more consistent trend across sites. Most sites experienced a decline in grass cover across the three time periods (figure 3). The one notable exception was the most westerly site, which displayed stability or a slight increase in grass cover under future climate projections.
 
 ### Unsupervised machine learning model using k-means.
 
-Our final model had a root mean square error of 0.259, and an R-squared value of 0.968. We saw that the three most important variables in predicting invasive forb coverage were current invasive forb coverage, current invasive grass coverage and precipitation; with maximum temperature being the least important. We saw that in general, the model was better at predicting higher values, as the clusters #4 and #5 are closer to the regression line of predicted versus actual values. Higher values are clustered more towards the western part of the state, in general.
+Our final model had a root mean square error of 0.259, and an R-squared value of 0.968. We saw that the three most important variables in predicting invasive forb coverage were current invasive forb coverage, current invasive grass coverage and precipitation; with maximum temperature being the least important (figure 7). We saw that in general, the model was better at predicting higher values, as the clusters #4 and #5 are closer to the regression line of predicted versus actual values (figures 8 & 9). Higher values are clustered more towards the western part of the state, in general (figures 5 & 9).
 
-# Discussion 
+# Discussion
 
-The analysis of our data relies heavily on climatic  and topographic maps  of Colorado. This is because our model was unsupervised, meaning that we were unable to retrieve or see the data that each cluster was pulling from. We will therefore analyze and discuss our results geographically.
+The analysis of our data relies heavily on climatic and topographic maps of Colorado. This is because our model was unsupervised, meaning that we were unable to retrieve or see the data that each cluster was pulling from. We will therefore analyze and discuss our results geographically and based on climatic maps .
 
-### Test 1: Visual 
+![Figure 10. Topographic map of Colorado from YellowMaps used for analyisis](images/TopoCO.png){width="468"}
+
+[![Figure 11. Colorado 2021 temperatures compared to historic ranges from WestWide Drought Tracker](images/COtemp.png)](https://wrcc.dri.edu/wwdt/about.php)
+
+[![Figure 12. Colorado 2021 precipitation compared to historic ranges from WestWide Drought Tracker](images/PrecipCO.png)](https://wrcc.dri.edu/wwdt/about.php)
+
+### Test 1: Visual
 
 Our initial visual observations suggest that both forb and grass cover can be significantly affected by projected late-century climate conditions. However, the response of these plant functional groups appears to vary by site and group.
 
 **Site-Level Trends and Implications**
 
-Forbs showed very variable patterns at sites. For example, some eastern slope sites had sharp forb declines, while others—those with unique microclimates or at higher elevations—had stable or even increasing forb cover. This diversity suggests that forb response to climate change potentially can be strongly site-specific, with localized environmental factors, species assemblages, or interactions not captured by large-scale climate variables being the decisive factors.
+Forbs showed very variable patterns at sites. For example, some eastern slope sites had sharp forb declines, while others—those with unique microclimates or at higher elevations—had stable or even increasing forb cover (figures 2 and 10). This diversity suggests that forb response to climate change potentially can be strongly site-specific, with localized environmental factors, species assemblages, or interactions not captured by large-scale climate variables being the decisive factors.
 
-In contrast, grass cover also decreased in a more uniform manner at most locations, particularly on the east-facing slope. Such homogeneity could be a sign of a broader sensitivity of grasses to the imposed changes in temperature and precipitation regimes. The only exception was the site farthest west, where grass cover was more stable or even slightly increasing, highlighting the importance of geographic and climatic context for controlling vegetation response.
+In contrast, grass cover also decreased in a more uniform manner at most locations, particularly on the east-facing slope (figure 3). Such homogeneity could be a sign of a broader sensitivity of grasses to the imposed changes in temperature and precipitation regimes. The only exception was the site farthest west, where grass cover was more stable or even slightly increasing, highlighting the importance of geographic and climatic context for controlling vegetation response. We see that the western slope of the state is experiencing hotter and drier condition (figures 11 & 12), and think that these conditons may favor invasives that are more accustomed to hotter and drier conditons, or those that can exploit moisture in direr conditons.
 
 ### Test 2: Unsupervised machine learning model using k-means.
 
-The main limitation in our study was that the projected data that we had showed very little variation in Colorado. This led us to adding climatic data to create k-means in order to  provide our model more variation to predict off of. The reason we used k-means is that models are better at predicting means then a true model when variance in the data is low. 
+The two most important variables in predicting invasive forb coverage mid century were current coverage of invasive forbs and grasses (figure 7) . This is likely because these invasives are already present and taking hold. The presence of them in the area means they can disperse more easily into other nearby areas, and can start their process of dominance. The reason that invasive grass coverage was important in predicting future forb coverage is likely because these ecosystems are already disturbed, reducing their resilience and making them more susceptible to future invasions. 
 
-The two most important variables in predicting invasive forb coverage mid century were current coverage of invasive forbs and grasses AS SEEN IN FIGURE . This is likely because these invasives are already present and taking hold. The presence of them in the area means they can disperse more easily into other nearby areas, and can start their process of dominance. The reason that invasive grass coverage was important in predicting future forb coverage is likely because these ecosystems are already disturbed, reducing their resilience and making them more susceptible to future invasions. 
+Annual precipitation was the third most important variable in predicting future forb coverage. This makes sense, because as discussed in the methods section, precipitation  determines soil moisture and plant productivity @jiang2022precipitation. Because we ran an unsupervised model, we cannot see the underlying data that the clusters are pulling from. Therefor, we cannot be sure if high or low precipitation is associated with higher invasive coverage. However, looking at climate maps such as figure 12, we can deduce that because the higher forb coverage clusters are generally in the west, lower than average precipitation is associated with higher invasive coverage. While temperature did not prove to be very important in our model, based on figure 11, we see that in the west there have also been higher than average temperatures. These two conditions combined lead us to believe that Western Colorado is more susceptible to invasive forbs than Eastern Colorado due to the dramatically changing climatic conditions in the region. 
 
-Annual precipitation was the third most important variable in predicting future forb coverage. This makes sense, because as discussed in the methods section, precipitation  determines soil moisture and plant productivity (yiang). Because we ran an unsupervised model, we cannot see the underlying data that the clusters are pulling from. Therefor, we cannot be sure if high or low precipitation is associated with higher invasive coverage. However, looking at climate maps such as figure \_\_, we can deduce that because the higher forb coverage clusters are generally in the west, lower than average precipitation is associated with higher invasive coverage. While temperature did not prove to be very important in our model, based on figure\_\_ we see that in the west there have also been higher than average temperatures. These two conditions combined lead us to believe that Western Colorado is more susceptible to invasive forbs than Eastern Colorado due to the dramatically changing climatic conditions in the region. 
+Another trend that we saw by looking at the cluster map and predicted vs. actual graph (figures 5 & 9 ) and a topographic map of Colorado (figure 10) is that the two clusters with highest values are valleys. We believe this is because valleys rely on runoff from the mountains, in this case the Western Slope. If those areas do not receive as much precipitation, the valleys do not receive runoff and are water stressed.
 
-Another trend that we saw by looking at the cluster map FIGUTE and a  topographic map of Colorado FIGURE is that the two clusters with highest values are valleys. We believe this is because valleys rely on runoff from the mountains, in this case the Western Slope. If those areas do not receive as much precipitation, the valleys do not receive runoff and are water stressed
+# Conclusions and Next steps
 
-# Conclusions and Next steps 
-
-n both of our tests, we can see that areas expected to experience more prominent effects of climate change are more at risk for invasive plants in the future. This underscores the importance of avoiding 585 “worst case” climate scenarios. Policy needs to be enforced and participated in  globally that will prevent the emissions that would lead to this climate scenario. We know that invasive species are only one of the risks under this scenario, and maybe not even the most pressing, but they will further degrade these vulnerable ecosystems, and could lead to disruptions in disturbance regimes such as fire and disease.
+In both of our tests, we can see that areas expected to experience more prominent effects of climate change are more at risk for invasive plants in the future. This underscores the importance of avoiding 585 “worst case” climate scenarios. Policy needs to be enforced and participated in globally that will prevent the emissions that would lead to this climate scenario. We know that invasive species are only one of the risks under this scenario, and maybe not even the most pressing, but they will further degrade these vulnerable ecosystems, and could lead to disruptions in disturbance regimes such as fire and disease.
 
 If we had more time for this study, we would have several next steps. We would like to look into the connection between unprecedented forest fires in Colorado to see if these fires could be a predicting factor in invasive coverage. We would also like to test other disturbances such as historic fire suppression, urban sprawl,and disease to see if these could be trained into the model. 
 
-We believe that further research needs to be done to analyze the functional groups discussed in this study, as well as specific invasives. Researchers still need to figure out how  invaders interact with things like competition from native plants or environmental conditions (Byun et al, 2018). This would provide insight into why these invaders are so successful, which could be used to inform management decisions. 
+We believe that further research needs to be done to analyze the functional groups discussed in this study, as well as specific invasives. Researchers still need to figure out how  invaders interact with things like competition from native plants or environmental conditions @byun2018management. This would provide insight into why these invaders are so successful, which could be used to inform management decisions. 
 
-Ultimately , our study shows the importance of avoiding worst case scenario climate scenarios, identifying new and creative  ways to stop the spread and dominance of invasive species, and restoring native vegetation communities and ecosystems. Restoration will be an important part of our path forward in stopping invasive species dominance, as we know that healthy ecosystems do not foster invasive species, as their niches are full and functioning well(Byun et al, 2018).  
+Ultimately , our study shows the importance of avoiding worst case scenario climate scenarios, identifying new and creative  ways to stop the spread and dominance of invasive species, and restoring native vegetation communities and ecosystems. Restoration will be an important part of our path forward in stopping invasive species dominance, as we know that healthy ecosystems do not foster invasive species, as their niches are full and functioning well @byun2018management.  
 
 \
